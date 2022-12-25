@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonObject;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.*;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -80,21 +81,35 @@ public class controller {
      }
 
     }
-    @RequestMapping(value = "/file/{email2}/{password}", method = RequestMethod.POST)
+    @GetMapping(value = "/file1/{email2}/{password}")
     @CrossOrigin
-    public String check_user(@PathVariable String email2, @PathVariable String password)
-    { System.out.println(email2);
-     System.out.println(password);
+    @ResponseBody
+    public String check_user(@PathVariable String email2, @PathVariable String password) throws ParseException, IOException {
+        System.out.println(email2);
+        System.out.println(password);
         boolean found=false;
+        ObjectMapper mapper = new ObjectMapper();
+
+        users = mapper.readValue(myObj, new TypeReference<Map<String,String>>() {
+        });
+        System.out.println(users.get(email2));
+        for (Map.Entry<String,String> entry : users.entrySet())
+            System.out.println("Key = " + entry.getKey() +
+                    ", Value = " + entry.getValue());
         for (Map.Entry<String, String> entry : users.entrySet()) {
-           if(entry.getKey()==email2 && entry.getValue()==password)
+           if(entry.getKey().equals(email2) && entry.getValue().equals(password))
            {
                found=true;
                break;
            }
         }
-        if(found)
+
+
+        if(found==true) {
             return "ok";
-        else return "not found";
+        }
+        else{
+            return "not found";
+        }
     }
 }
