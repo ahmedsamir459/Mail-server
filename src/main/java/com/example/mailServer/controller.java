@@ -56,7 +56,7 @@ public class controller {
                     System.out.println(jsonObj+"hena");
                     FileWriter myWriter = new FileWriter("E://users//database.json");
                     myWriter.append(jsonObj.toString());
-myWriter.close();
+                    myWriter.close();
                 } else {
 
                     users.put(email, pass);
@@ -71,57 +71,30 @@ myWriter.close();
             for (Map.Entry<String, String> entry : users.entrySet())
                 System.out.println("Key = " + entry.getKey() +
                         ", Value = " + entry.getValue());
-
-
-
-
-
-//                    ObjectMapper mapper = new ObjectMapper();
-//                    File fileObj = new File("E://users//database.json");
-//                    users.put(email, pass);
-//                    JSONObject jsonObj = new JSONObject(users);
-//                    myWriter.write(jsonObj.toString());
-//                    for (Map.Entry<String,String> entry : users.entrySet())
-//                        System.out.println("Key = " + entry.getKey() +
-//                                ", Value = " + entry.getValue());
-
-
-//            BufferedReader br = new BufferedReader(new FileReader("E://users//database.json"));
-//            if (br.readLine() == null) {
-//                users.put(email, pass);
-//                JSONObject jsonObj = new JSONObject(users);
-//                myWriter.write(jsonObj.toString());
-//            }
-//            for (Map.Entry<String,String> entry : users.entrySet())
-//////                        System.out.println("Key = " + entry.getKey() +
-//////                                ", Value = " + entry.getValue());
-
-//            else
-//            {
-////                JSONParser parser = new JSONParser();
-////                ObjectMapper mapper = new ObjectMapper();
-////
-////                try {
-////                    File fileObj = new File("E://users//database.json");
-////                    users = mapper.readValue(
-////                            fileObj, new TypeReference<Map<String,String>>() {
-////                            });
-////                    for (Map.Entry<String,String> entry : users.entrySet())
-////                        System.out.println("Key = " + entry.getKey() +
-////                                ", Value = " + entry.getValue());
-////
-////                } catch (Exception e) {
-////                    e.printStackTrace();
-////                }
-//            }
-
-                System.out.println("Successfully wrote to the file.");
+            System.out.println("Successfully wrote to the file.");
             }
 
      catch (Exception e)
      {
-
+        System.out.println("error");
      }
 
+    }
+    @RequestMapping(value = "/file/{email2}/{password}", method = RequestMethod.POST)
+    @CrossOrigin
+    public String check_user(@PathVariable String email2, @PathVariable String password)
+    { System.out.println(email2);
+     System.out.println(password);
+        boolean found=false;
+        for (Map.Entry<String, String> entry : users.entrySet()) {
+           if(entry.getKey()==email2 && entry.getValue()==password)
+           {
+               found=true;
+               break;
+           }
+        }
+        if(found)
+            return "ok";
+        else return "not found";
     }
 }
