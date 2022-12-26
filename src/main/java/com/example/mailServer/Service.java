@@ -1,14 +1,12 @@
 package com.example.mailServer;
 
-import java.io.File;
 import java.io.IOException;
 
-public class service {
-    public static int create_file( File file) {
-        CreateDirectory();
-        File myObj = null;
+public class Service {
+    public  int create_file( String path) {
+        java.io.File myObj = null;
         try {
-            myObj = new File("E://users//database.json");
+            myObj = new java.io.File(path);
             System.out.println(myObj.length());
             System.out.println(myObj);
 
@@ -24,8 +22,12 @@ public class service {
         return (int)myObj.length();
     }
 
-    public static void CreateDirectory(){
-            File f = new File("E://users");
-           f.mkdir();
+    public void CreateFolder(String path){
+            java.io.File f = new java.io.File(path);
+        if (f.mkdir()) {
+            System.out.println("Folder created: " + f.getName());
+        } else {
+            System.out.println("Folder already exists.");
+        }
     }
 }

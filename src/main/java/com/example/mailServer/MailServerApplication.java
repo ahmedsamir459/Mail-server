@@ -12,8 +12,10 @@ import java.util.Map;
 @SpringBootApplication
 public class MailServerApplication {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws NullPointerException, IOException {
 		SpringApplication.run(MailServerApplication.class, args);
+     controller c=new controller();
+	 c.save_mails("mohamed@mail.com","ahmed@mail.com","awl mail","hello ahmed");
 
 	}
 

@@ -1,32 +1,22 @@
 package com.example.mailServer;
-
-import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.JsonObject;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
-import org.json.simple.parser.JSONParser;
+import org.json.JSONArray;
 import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.*;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 @CrossOrigin
 @RestController
 @RequestMapping
 public class controller {
-    File myObj = new File("E://users//database.json");
-    service sr = new service();
-    int len = sr.create_file(myObj);
+    private  String database="E://users//database.json";
+    java.io.File myObj = new java.io.File(database);
+    Service sr = new Service();
 
     public static Map<String, String> users = new HashMap<>();
 
@@ -37,20 +27,22 @@ public class controller {
     @CrossOrigin
     @ResponseBody
     public String sign_up(@PathVariable String email, @PathVariable String pass) throws ParseException, IOException {
+        sr.CreateFolder("E://users");
+        int len = sr.create_file(database);
+        String filename = "";
+        int index = email.indexOf("@");
+        filename = email.substring(0, index);
 
 
 String result="";
      try {
-
-         String filename = "";
-         int index = email.indexOf("@");
-         filename = email.substring(0, index);
-
          if (len != 0) {
              System.out.println("try");
              result=check_user(email,pass);
              System.out.println(result);
              if(result.equals("not found")) {
+                 FileBuilder f=new FileBuilder();
+                 f.BuildFile(filename);
                  ObjectMapper mapper = new ObjectMapper();
                  users = new HashMap<>();
                  users = mapper.readValue(myObj, new TypeReference<Map<String, String>>() {
@@ -86,10 +78,34 @@ String result="";
          return result;
 
     }
+
     @GetMapping(value = "/file1/{email2}/{password}")
     @CrossOrigin
     @ResponseBody
-    public String check_user(@PathVariable String email2, @PathVariable String password) throws ParseException, IOException {
+    public String sign_in(@PathVariable String email2, @PathVariable String password) throws ParseException, IOException {
+        return check_user(email2, password);
+
+
+    }
+    public void save_mails(String sender,String reciever,String subject,String body) throws IOException {    String filename1,filename2;
+        int index = sender.indexOf("@");
+        filename1 = sender.substring(0, index);
+         index = reciever.indexOf("@");
+        filename2 = reciever.substring(0, index);
+        MailBuilder builder=new MailBuilder();
+        Mail mail=builder.mailbuild(sender, reciever, subject, body);
+        JSONObject jsonObject=new JSONObject(mail);
+        JSONArray array=new JSONArray();
+        array.put(jsonObject);
+        FileWriter writer=new FileWriter("E://users//"+filename1+"//inbox.json");
+        writer.write(array.toString());
+        FileWriter writer2=new FileWriter("E://users//"+filename2+"//inbox.json");
+        writer2.write(array.toString());
+        writer.close();
+        writer2.close();
+    }
+
+    public String check_user(String email2,  String password) throws ParseException, IOException {
         System.out.println(email2);
         System.out.println(password);
         boolean found=false;
