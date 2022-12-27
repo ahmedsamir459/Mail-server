@@ -1,27 +1,28 @@
 package com.example.mailServer;
 
 public class Mail {
-   private String sender;
-   private String  recievers;
+   private String from;
+   private String  to;
    private String subject;
    private String body;
    private int priority;
-   private String [] attachments;
+//   private String [] attachments;
 
-   public String getSender() {
-      return sender;
+
+   public String getFrom() {
+      return from;
    }
 
-   public void setSender(String sender) {
-      this.sender = sender;
+   public void setFrom(String from) {
+      this.from = from;
    }
 
-   public String getRecievers() {
-      return recievers;
+   public String getTo() {
+      return to;
    }
 
-   public void setRecievers(String recievers) {
-      this.recievers = recievers;
+   public void setTo(String to) {
+      this.to = to;
    }
 
    public String getSubject() {
@@ -48,11 +49,11 @@ public class Mail {
       this.priority = priority;
    }
 
-   public String[] getAttachments() {
-      return attachments;
-   }
-
-   public void setAttachments(String[] attachments) {
-      this.attachments = attachments;
-   }
+//   public String[] getAttachments() {
+//      return attachments;
+//   }
+//
+//   public void setAttachments(String[] attachments) {
+//      this.attachments = attachments;
+//   }
 }

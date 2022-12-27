@@ -1,21 +1,21 @@
 package com.example.mailServer;
 
 public class result {
-    String massage;
+    String message;
     Boolean error;
 
 
     public result(String massage, Boolean error) {
-        this.massage = massage;
+        this.message = massage;
         this.error = error;
     }
 
-    public String getMassage() {
-        return massage;
+    public String getMessage() {
+        return message;
     }
 
     public void setMassage(String massage) {
-        this.massage = massage;
+        this.message = massage;
     }
 
     public Boolean getError() {

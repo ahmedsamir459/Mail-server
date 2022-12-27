@@ -1,11 +1,16 @@
 package com.example.mailServer;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.JSONArray;
+
+import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,6 +63,8 @@ String result="";
                  myWriter.close();
              }
          } else {
+             FileBuilder f=new FileBuilder();
+             f.BuildFile(filename);
              System.out.println("else");
               result="not found";
              users.put(email, pass);
@@ -87,22 +94,42 @@ String result="";
 
 
     }
-    public void save_mails(String sender,String reciever,String subject,String body) throws IOException {    String filename1,filename2;
-        int index = sender.indexOf("@");
-        filename1 = sender.substring(0, index);
-         index = reciever.indexOf("@");
-        filename2 = reciever.substring(0, index);
+    @RequestMapping( value = "/file2",method = RequestMethod.POST)
+    @ResponseBody
+    public result save_mails(@RequestBody Mail maill) throws IOException, ParseException {
+        JSONObject json1=new JSONObject(maill);
+        System.out.println(json1);
+        String filename1,filename2;
+        int index;
+         index = maill.getTo().indexOf("@");
+        filename2 = maill.getTo().substring(0, index);
         MailBuilder builder=new MailBuilder();
-        Mail mail=builder.mailbuild(sender, reciever, subject, body);
+        Mail mail=builder.mailbuild(maill);
         JSONObject jsonObject=new JSONObject(mail);
         JSONArray array=new JSONArray();
-        array.put(jsonObject);
-        FileWriter writer=new FileWriter("E://users//"+filename1+"//inbox.json");
-        writer.write(array.toString());
+        Path path= Paths.get("E://users//"+filename2+"//inbox.json");
+        int sz=(int)Files.size(path);
+        if(sz!=0) {
+            array = load_mails("E://users//" + filename2 + "//inbox.json");
+        }
+        array.add(jsonObject);
         FileWriter writer2=new FileWriter("E://users//"+filename2+"//inbox.json");
         writer2.write(array.toString());
-        writer.close();
         writer2.close();
+        load_mails("E://users//"+filename2+"//inbox.json");
+        result res=new result("saved correctly",false);
+        return res;
+    }
+    public JSONArray load_mails(String filename) throws IOException, ParseException {
+
+
+        FileReader file=new FileReader(filename);
+        JSONParser parser = new JSONParser();
+        JSONArray array=new JSONArray();
+        array = (JSONArray) parser.parse(new FileReader(filename));
+        System.out.println(array);
+        return array;
+
     }
 
     public String check_user(String email2,  String password) throws ParseException, IOException {
