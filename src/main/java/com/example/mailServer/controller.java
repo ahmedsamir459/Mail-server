@@ -22,6 +22,7 @@ public class controller {
     private  String database="E://users//database.json";
     java.io.File myObj = new java.io.File(database);
     Service sr = new Service();
+    Validator vl=new Validator();
 
     public static Map<String, String> users = new HashMap<>();
 
@@ -43,10 +44,10 @@ String result="";
      try {
          if (len != 0) {
              System.out.println("try");
-             result=check_user(email,pass);
+             result = vl.check_user_signup(email,pass,users,myObj);
              System.out.println(result);
-             if(result.equals("not found")) {
-                 FileBuilder f=new FileBuilder();
+             if (result.equals("not found")) {
+                 FileBuilder f = new FileBuilder();
                  f.BuildFile(filename);
                  ObjectMapper mapper = new ObjectMapper();
                  users = new HashMap<>();
@@ -62,25 +63,27 @@ String result="";
                  myWriter.append(jsonObj.toString());
                  myWriter.close();
              }
-         } else {
-             FileBuilder f=new FileBuilder();
-             f.BuildFile(filename);
-             System.out.println("else");
-              result="not found";
-             users.put(email, pass);
-             for (Map.Entry<String, String> entry : users.entrySet())
-                 System.out.println("Key = " + entry.getKey() +
-                         ", Value = " + entry.getValue());
-             JSONObject jsonObj = new JSONObject(users);
-             FileWriter myWriter = new FileWriter("E://users//database.json");
-             myWriter.write(jsonObj.toString());
-             myWriter.close();
+             } else {
+
+                 FileBuilder f = new FileBuilder();
+                 f.BuildFile(filename);
+                 System.out.println("else");
+                 result = "not found";
+                 users.put(email, pass);
+                 for (Map.Entry<String, String> entry : users.entrySet())
+                     System.out.println("Key = " + entry.getKey() +
+                             ", Value = " + entry.getValue());
+                 JSONObject jsonObj = new JSONObject(users);
+                 FileWriter myWriter = new FileWriter("E://users//database.json");
+                 myWriter.write(jsonObj.toString());
+                 myWriter.close();
+             }
+
+             System.out.println("Successfully wrote to the file.");
+         } catch(Exception e){
+             System.out.println("error");
          }
 
-         System.out.println("Successfully wrote to the file.");
-     } catch (Exception e) {
-         System.out.println("error");
-     }
 
          return result;
 
@@ -90,7 +93,8 @@ String result="";
     @CrossOrigin
     @ResponseBody
     public String sign_in(@PathVariable String email2, @PathVariable String password) throws ParseException, IOException {
-        return check_user(email2, password);
+
+        return vl.check_user(email2,password,users,myObj);
 
 
     }
@@ -132,27 +136,4 @@ String result="";
 
     }
 
-    public String check_user(String email2,  String password) throws ParseException, IOException {
-        System.out.println(email2);
-        System.out.println(password);
-        boolean found=false;
-        ObjectMapper mapper = new ObjectMapper();
-
-        users = mapper.readValue(myObj, new TypeReference<Map<String,String>>() {
-        });
-
-        for (Map.Entry<String, String> entry : users.entrySet()) {
-           if(entry.getKey().equals(email2) && entry.getValue().equals(password))
-           {
-               found=true;
-               break;
-           }
-        }
-        if(found==true){
-            return "found";
-        }
-        else{
-            return "not found";
-        }
-    }
 }
