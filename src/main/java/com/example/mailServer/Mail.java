@@ -4,11 +4,13 @@ public class Mail {
    private String from;
    private String  to;
    private String subject;
+
    private String body;
    private int priority;
 //   private String [] attachments;
 
-
+   public Mail() {
+   }
    public String getFrom() {
       return from;
    }

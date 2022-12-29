@@ -1,4 +1,4 @@
-package com.example.mailServer;
+package com.example.mailServer.Modules;
 
 public class result {
     String message;

@@ -1,4 +1,6 @@
-package com.example.mailServer;
+package com.example.mailServer.Modules;
+
+import com.example.mailServer.Mail;
 
 public class user {
    private   String email;
