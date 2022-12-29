@@ -1,5 +1,7 @@
 package com.example.mailServer;
 
+import java.io.File;
+
 public class Mail {
    private String from;
    private String  to;
@@ -7,6 +9,7 @@ public class Mail {
 
    private String body;
    private int priority;
+   private  File [] attachments;
 //   private String [] attachments;
 
    public Mail() {

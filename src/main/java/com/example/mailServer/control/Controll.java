@@ -13,6 +13,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -139,6 +140,13 @@ public class Controll {
         array1.addAll(result);
         return array1;
     }
+    public void save_attachments(ArrayList<File> array)
+    {
+        for (int i = 0; i < array.size(); i++)
+
+            System.out.print(array.get(i) + " ");
+    }
+
 
 
 }

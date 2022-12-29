@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
@@ -19,6 +20,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.json.JSONObject;
+import org.springframework.web.multipart.MultipartFile;
+
 @CrossOrigin
 @RestController
 @RequestMapping
@@ -53,6 +56,23 @@ public class Requests {
         System.out.println(filename);
         JSONArray json1=controll.filter(feature,target,filename);
         return json1;
+    }
+    @PostMapping("/attachment")
+    public result handleattachmnets(@RequestParam("attachment")MultipartFile[] attachments) throws IOException {
+      for(MultipartFile attachment:attachments){
+          attachment.transferTo(new File("E://trial//"+attachment.getOriginalFilename()));
+      }
+      result res=new result("recieved",false);
+        return res;
+    }
+    @RestController
+    @RequestMapping("/server")
+    public class AttachmentController {
+        @PostMapping("/endpoint")
+        public void handleAttachment(@RequestParam("attachment") MultipartFile attachment) throws IOException {
+//            Path targetLocation = Paths.get("/desired/location/on/server/" + attachment.getOriginalFilename());
+//            Files.copy(attachment.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+}
     }
 
 
