@@ -1,6 +1,7 @@
 package com.example.mailServer.control;
 
 import com.example.mailServer.Database.FileSinglton;
+import com.example.mailServer.EmailsFilter.EmailsFilteringCustomizedCriteria;
 import com.example.mailServer.FileBuilder;
 import com.example.mailServer.Mail;
 import com.example.mailServer.Modules.Service;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -88,10 +90,11 @@ public class Controll {
         return result;
     }
     public org.json.simple.JSONArray load_mails(String filename) throws IOException, ParseException {
-        FileReader file=new FileReader(filename);
+        System.out.println(filename);
+        System.out.println("ok");
         JSONParser parser = new JSONParser();
-        org.json.simple.JSONArray array=new org.json.simple.JSONArray();
-        array = (org.json.simple.JSONArray) parser.parse(new FileReader(filename));
+        org.json.simple.JSONArray array;
+        array = (org.json.simple.JSONArray) parser.parse(new FileReader("C:\\Users\\Ahmed Samir\\Desktop\\Mail\\src\\main\\java\\com\\example\\mailServer\\Database\\users\\ahmed\\inbox.json"));
         System.out.println(array);
         return array;
 
@@ -123,7 +126,18 @@ public class Controll {
         save_mails(path1,array);
         save_mails(path2,array);
         load_mails(path1);
+        load_mails(path2);
         return array;
+    }
+
+    public JSONArray filter(String feature, String target, String filename) throws IOException, ParseException {
+        JSONArray array=load_mails(filename);
+        System.out.println("array"+array);
+        EmailsFilteringCustomizedCriteria filter=new EmailsFilteringCustomizedCriteria(feature,target);
+        ArrayList result=filter.meetCriteria(array);
+        JSONArray array1=new JSONArray();
+        array1.addAll(result);
+        return array1;
     }
 
 

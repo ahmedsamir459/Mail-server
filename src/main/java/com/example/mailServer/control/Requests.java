@@ -45,6 +45,15 @@ public class Requests {
        JSONArray json1=controll.save_mail(mail);
         return json1;
     }
+    @RequestMapping( value = "/filter/{feature}/{target}",method = RequestMethod.POST)
+    @ResponseBody
+    public JSONArray filter(@RequestBody String filename,@PathVariable String feature,@PathVariable String target ) throws Exception {
+        System.out.println(feature);
+        System.out.println(target);
+        System.out.println(filename);
+        JSONArray json1=controll.filter(feature,target,filename);
+        return json1;
+    }
 
 
 
