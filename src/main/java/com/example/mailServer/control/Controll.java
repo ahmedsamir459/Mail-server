@@ -5,6 +5,7 @@ import com.example.mailServer.EmailsFilter.EmailsFilteringCustomizedCriteria;
 import com.example.mailServer.FileBuilder;
 import com.example.mailServer.Mail;
 import com.example.mailServer.Modules.Service;
+import com.example.mailServer.Modules.result;
 import com.example.mailServer.Validator;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,6 +13,9 @@ import org.json.JSONObject;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileReader;
@@ -20,6 +24,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -95,7 +100,7 @@ public class Controll {
         System.out.println("ok");
         JSONParser parser = new JSONParser();
         org.json.simple.JSONArray array;
-        array = (org.json.simple.JSONArray) parser.parse(new FileReader("C:\\Users\\Ahmed Samir\\Desktop\\Mail\\src\\main\\java\\com\\example\\mailServer\\Database\\users\\ahmed\\inbox.json"));
+        array = (org.json.simple.JSONArray) parser.parse(new FileReader(filename));
         System.out.println(array);
         return array;
 
@@ -114,11 +119,10 @@ public class Controll {
         filename2 = get_name(mail.getTo());
         String path1=myfile.getDir_path()+"\\"+filename2+"\\inbox.json";
         String path2=myfile.getDir_path()+"\\"+filename1+"\\sent.json";
+
         JSONObject jsonObject=new JSONObject(mail);
         org.json.simple.JSONArray array=new org.json.simple.JSONArray();
         Path path= Paths.get(path1);
-
-
         int sz=(int) Files.size(path);
         if(sz!=0) {
             array = load_mails(path1);
@@ -140,11 +144,79 @@ public class Controll {
         array1.addAll(result);
         return array1;
     }
-    public void save_attachments(ArrayList<File> array)
-    {
-        for (int i = 0; i < array.size(); i++)
+    public ArrayList<String> handleattachmnets1(MultipartFile[] attachments,String to,String from) throws Exception {
+ArrayList<String> names=new ArrayList<>();
+        String filename1=get_name(to);
+        String filename2=get_name(from);
+       String path=myfile.getDir_path();
 
-            System.out.print(array.get(i) + " ");
+        for(MultipartFile attachment:attachments){
+            try {
+                        names.add(attachment.getOriginalFilename());
+                Path copyLocation = Paths.get(path +File.separator+filename1 +File.separator + StringUtils.cleanPath(attachment.getOriginalFilename()));
+                Path copyLocation1 = Paths.get(path +File.separator+filename2 +File.separator + StringUtils.cleanPath(attachment.getOriginalFilename()));
+                Files.copy(attachment.getInputStream(),copyLocation, StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(attachment.getInputStream(),copyLocation1, StandardCopyOption.REPLACE_EXISTING);
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+//            names.add(attachment.getOriginalFilename());
+//            System.out.println(attachment);
+//            Path path1=Paths.get("src\\main\\java\\com\\example\\mailServer\\Database\\users"+"\\"+"ahmed",attachment.getOriginalFilename());
+//            attachment.transferTo(path1);
+        }
+//        for(MultipartFile attachment:attachments2){
+
+//
+//            System.out.println(attachment.getOriginalFilename());
+//            File f=new File("D:\\year 2\\1st semester\\oop\\assignment 4\\mailServer\\mailServer\\src\\main\\java\\com\\example\\mailServer\\Database\\users\\ahmed\\"+attachment.getOriginalFilename());
+//            System.out.println(f);
+//            attachment.transferTo(f);
+//        }
+
+
+        return names;
+    }
+    public void handleattachmnets2(MultipartFile[] attachments,String from) throws Exception {
+        ArrayList<String> names=new ArrayList<>();
+        String filename=get_name(from);
+        MultipartFile [] attachments2=attachments.clone();
+        String path=myfile.getDir_path();
+        for(MultipartFile attachment:attachments){
+//            try {
+//                Path path1=Paths.get(path+"\\"+filename1+"\\"+attachment.getOriginalFilename());
+//                Files.copy(attachment.getInputStream(),path1.resolve());
+//            } catch (Exception e) {
+//                throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
+//            }
+            names.add(attachment.getOriginalFilename());
+            System.out.println(attachment);
+            attachment.transferTo(new File(path+"\\"+filename+"\\"+attachment.getOriginalFilename()));
+        }
+//        for(MultipartFile attachment:attachments2){
+//            names.add(attachment.getOriginalFilename());
+//
+//            System.out.println(attachment.getOriginalFilename());
+//            File f=new File("D:\\year 2\\1st semester\\oop\\assignment 4\\mailServer\\mailServer\\src\\main\\java\\com\\example\\mailServer\\Database\\users\\ahmed\\"+attachment.getOriginalFilename());
+//            System.out.println(f);
+//            attachment.transferTo(f);
+//        }
+
+
+    }
+    public Path getfiles(String fileName) {
+
+        Path res = Paths.get(myfile.getDir_path()+"\\"+fileName).toAbsolutePath().normalize().resolve(fileName) ;
+        System.out.println(res);
+        if(Files.exists(res)){
+            System.out.println("will send");
+            return res ;
+        }
+        System.out.println("will NOT send");
+        return null ;
+
     }
 
 

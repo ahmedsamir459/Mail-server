@@ -9,6 +9,9 @@ import com.google.gson.Gson;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +19,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,9 +48,30 @@ public class Requests {
     @RequestMapping( value = "/mailling",method = RequestMethod.POST)
     @ResponseBody
     public JSONArray mailling(@RequestBody Mail mail) throws Exception {
-        System.out.println(mail);
-       JSONArray json1=controll.save_mail(mail);
-        return json1;
+//        for(int i=0;i< list.length;i++) {
+//            System.out.println(list[i]);
+//        }
+//        mail.setAttachments(list);
+        Mail m=new Mail();
+        String [] at={"jo","kk"};
+        m.setAttachments(at);
+        m.setBody("gg");
+        m.setSubject("uu");
+        m.setTo("pp");
+        m.setFrom("io");
+        m.setPriority(1);
+        JSONObject jsonObject1=new JSONObject(m);
+         JSONObject jsonObject=new JSONObject(mail);
+        System.out.println(jsonObject);
+        System.out.println(jsonObject1);
+//                for(int i=0;i<names.size();i++)
+//        {
+//            System.out.println(names.get(i));
+//        }
+
+     JSONArray json1=controll.save_mail(mail);
+
+return  json1;
     }
     @RequestMapping( value = "/filter/{feature}/{target}",method = RequestMethod.POST)
     @ResponseBody
@@ -57,23 +82,38 @@ public class Requests {
         JSONArray json1=controll.filter(feature,target,filename);
         return json1;
     }
-    @PostMapping("/attachment")
-    public result handleattachmnets(@RequestParam("attachment")MultipartFile[] attachments) throws IOException {
-      for(MultipartFile attachment:attachments){
-          attachment.transferTo(new File("E://trial//"+attachment.getOriginalFilename()));
-      }
-      result res=new result("recieved",false);
-        return res;
+   @PostMapping("/attachments/{to}/{from}")
+    public ArrayList<String> handleattachmnets(@RequestParam("attachment") MultipartFile [] attachments,@PathVariable  String to,@PathVariable String from) throws Exception {
+
+//      for(MultipartFile attachment:attachments){
+//          attachment.transferTo(new File("E://trial//"+attachment.getOriginalFilename()));
+//      }
+       System.out.println(to);
+       System.out.println(from);
+       Controll c=new Controll();
+      ArrayList<String> names= c.handleattachmnets1(attachments,to,from);
+
+        return names;
     }
-    @RestController
-    @RequestMapping("/server")
-    public class AttachmentController {
-        @PostMapping("/endpoint")
-        public void handleAttachment(@RequestParam("attachment") MultipartFile attachment) throws IOException {
-//            Path targetLocation = Paths.get("/desired/location/on/server/" + attachment.getOriginalFilename());
-//            Files.copy(attachment.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-}
+    @GetMapping("/getfiles/{fileName}")
+    public ResponseEntity<UrlResource>  getFiles (@PathVariable String fileName){
+            Path paths = controll.getfiles(fileName);
+            System.out.println(paths);
+
+        try {
+                UrlResource resource = new UrlResource(paths.toUri());
+                 HttpHeaders httpHeaders = new HttpHeaders();
+                httpHeaders.add("File-Name", fileName);
+                httpHeaders.add(HttpHeaders.CONTENT_DISPOSITION, "attachment;File-Name=" + resource.getFilename());
+                System.out.println("hena");
+
+            return  ResponseEntity.ok().contentType(MediaType.parseMediaType(Files.probeContentType(paths))).headers(httpHeaders).body( resource) ;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null ;
+        }
     }
+
 
 
 

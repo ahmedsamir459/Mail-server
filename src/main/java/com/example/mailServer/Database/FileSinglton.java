@@ -5,7 +5,7 @@ import com.example.mailServer.Modules.Service;
 public class FileSinglton {
     private static FileSinglton instance = null;
     private String path = "src\\main\\java\\com\\example\\mailServer\\Database\\users\\Mail.json";
-    private String dir_path = "src\\main\\java\\com\\example\\mailServer\\Database\\users";
+    private String dir_path = "D:\\year 2\\1st semester\\oop\\assignment 4\\mailServer\\mailServer\\src\\main\\java\\com\\example\\mailServer\\Database\\users";
     private java.io.File myObj= new java.io.File(path);;
     private int size=0;
     private Service sr=new Service();

@@ -1,6 +1,7 @@
 package com.example.mailServer;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class Mail {
    private String from;
@@ -9,8 +10,15 @@ public class Mail {
 
    private String body;
    private int priority;
-   private  File [] attachments;
-//   private String [] attachments;
+   private String [] attachment;
+
+   public String[] getAttachments() {
+      return attachment;
+   }
+
+   public void setAttachments(String[] attachments) {
+      this.attachment = attachments;
+   }
 
    public Mail() {
    }
@@ -61,4 +69,5 @@ public class Mail {
 //   public void setAttachments(String[] attachments) {
 //      this.attachments = attachments;
 //   }
+
 }
