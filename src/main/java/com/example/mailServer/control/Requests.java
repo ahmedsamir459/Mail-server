@@ -95,9 +95,9 @@ return  json1;
 
         return names;
     }
-    @GetMapping("/getfiles/{fileName}")
-    public ResponseEntity<UrlResource>  getFiles (@PathVariable String fileName){
-            Path paths = controll.getfiles(fileName);
+    @GetMapping("/getfiles/{fileName}/{from}")
+    public ResponseEntity<UrlResource>  getFiles (@PathVariable String fileName,@PathVariable String from) throws Exception {
+            Path paths = controll.getfiles(fileName,from);
             System.out.println(paths);
 
         try {

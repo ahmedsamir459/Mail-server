@@ -206,9 +206,9 @@ ArrayList<String> names=new ArrayList<>();
 
 
     }
-    public Path getfiles(String fileName) {
-
-        Path res = Paths.get(myfile.getDir_path()+"\\"+fileName).toAbsolutePath().normalize().resolve(fileName) ;
+    public Path getfiles(String fileName,String from2) throws Exception {
+       String from=get_name(from2);
+        Path res = Paths.get(myfile.getDir_path()+"\\"+from).toAbsolutePath().normalize().resolve(fileName) ;
         System.out.println(res);
         if(Files.exists(res)){
             System.out.println("will send");
