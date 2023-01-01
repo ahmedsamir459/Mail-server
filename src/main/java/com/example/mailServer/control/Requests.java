@@ -39,16 +39,14 @@ public class Requests {
     }
     @RequestMapping( value = "/mailing",method = RequestMethod.POST)
     @ResponseBody
-    public String mailing(@RequestBody Mail mail) throws Exception {
-       String result=controll.save_mail(mail);
-        return result;
+    public result mailing(@RequestBody Mail mail) throws Exception {
+       return controll.save_mail(mail);
     }
     @RequestMapping(value = "/load/{email}/{fileName}",method = RequestMethod.GET)
     public JSONArray load_mail(@PathVariable String email,@PathVariable String fileName) throws Exception {
         String path=controll.myfile.getDir_path()+File.separator+controll.get_name(email)+File.separator+fileName+".json";
         return controll.load_mails(path);
     }
-
     @RequestMapping( value = "/filter/{feature}/{target}",method = RequestMethod.POST)
     @ResponseBody
     public JSONArray filter(@RequestBody String filename,@PathVariable String feature,@PathVariable String target ) throws Exception {

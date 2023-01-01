@@ -5,6 +5,7 @@ import com.example.mailServer.EmailsFilter.EmailFilter;
 import com.example.mailServer.FileBuilder;
 import com.example.mailServer.Mail;
 import com.example.mailServer.Modules.Service;
+import com.example.mailServer.Modules.result;
 import com.example.mailServer.Validator;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -128,7 +129,7 @@ public class Controll {
         myWriter.write(array.toString());
         myWriter.close();
     }
-    public String save_mail(Mail mail) throws Exception {
+    public result save_mail(Mail mail) throws Exception {
         String filename1,filename2;
         filename1=get_name(mail.getFrom());
         filename2 = get_name(mail.getTo());
@@ -155,10 +156,10 @@ public class Controll {
             save_mails(path2,array1);
             load_mails(path1);
             load_mails(path2);
-            return "saved";
+            return new result("saved",true);
         }
         catch(Exception e){
-            return "not saved";
+            return new result("error",false);
         }
     }
 
