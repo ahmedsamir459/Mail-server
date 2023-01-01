@@ -1,6 +1,10 @@
 package com.example.mailServer;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.File;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -12,6 +16,7 @@ public class Mail {
    private int priority;
 
    private String [] attachment;
+   private String date;
 
    public String getFrom() {
       return from;
@@ -61,15 +66,13 @@ public class Mail {
       this.attachment = attachment;
    }
 
-   public Date getDate() {
+   public String getDate() {
       return date;
    }
 
-   public void setDate(Date date) {
+   public void setDate(String date) {
       this.date = date;
    }
-
-   private Date date;
 
 
    public Mail() {

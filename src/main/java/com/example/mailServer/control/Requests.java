@@ -4,6 +4,7 @@ import com.example.mailServer.Modules.result;
 
 import org.json.simple.JSONArray;
 import org.springframework.core.io.UrlResource;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -47,10 +48,11 @@ public class Requests {
         String path=controll.myfile.getDir_path()+File.separator+controll.get_name(email)+File.separator+fileName+".json";
         return controll.load_mails(path);
     }
-    @RequestMapping( value = "/filter/{feature}/{target}",method = RequestMethod.POST)
+    @RequestMapping( value = "/filter/{email}/{filename}/{feature}/{target}",method = RequestMethod.POST)
     @ResponseBody
-    public JSONArray filter(@RequestBody String filename,@PathVariable String feature,@PathVariable String target ) throws Exception {
-        JSONArray json1=controll.filter(feature,target,filename);
+    public JSONArray filter(@PathVariable String email,@PathVariable String filename,@PathVariable String feature,@PathVariable String target ) throws Exception {
+        String path=controll.myfile.getDir_path()+File.separator+controll.get_name(email)+File.separator+filename+".json";
+        JSONArray json1=controll.filter(feature,target,path);
         return json1;
     }
    @RequestMapping(value = "/addfolder/{mail}/{name}", method = RequestMethod.GET)
@@ -63,12 +65,12 @@ public class Requests {
     public String moveall(@PathVariable String mail,@PathVariable String name,@PathVariable String name1) throws Exception {
         return controll.move_all(mail,name,name1);
     }
-    @RequestMapping(value = "/deletemail/{email}/{filename}", method = RequestMethod.POST)
-    public String deletemail(@RequestBody Mail mail,@PathVariable String email,@PathVariable String filename) throws Exception {;
+    @RequestMapping(value = "/deletemail/{email}/{filename}", method = RequestMethod.DELETE)
+    public result deletemail(@RequestBody Mail mail,@PathVariable String email,@PathVariable String filename) throws Exception {
         return controll.delete_mail(filename,email,mail);
     }
-    @RequestMapping(value = "/deleteall/{email}/{filename}", method = RequestMethod.POST)
-    public String deleteall(@PathVariable String email,@PathVariable String filename) throws Exception {;
+    @RequestMapping(value = "/deleteall/{email}/{filename}", method = RequestMethod.DELETE)
+    public result deleteall(@PathVariable String email,@PathVariable String filename) throws Exception {;
         return controll.delete_all(filename,email);
     }
     @RequestMapping(value = "/moveemail/{email}/{filename}/{filename1}", method = RequestMethod.POST)
@@ -85,8 +87,8 @@ public class Requests {
     public  String renamecontact(@PathVariable String mail,@PathVariable String name, @PathVariable String mail2) throws Exception {
         return controll.rename_contact(mail,name,mail2);
     }
-    @RequestMapping(value = "/deletecontact/{mail}/{mail2}", method = RequestMethod.GET)
-    public  String deletecontact(@PathVariable String mail, @PathVariable String mail2) throws Exception {
+    @RequestMapping(value = "/deletecontact/{mail}/{mail2}", method = RequestMethod.DELETE)
+    public  result deletecontact(@PathVariable String mail, @PathVariable String mail2) throws Exception {
         return controll.deletecontact(mail,mail2);
     }
     @RequestMapping(value = "/loadcontact/{mail}", method = RequestMethod.GET)
@@ -95,8 +97,8 @@ public class Requests {
         return controll.load_contact(path);
     }
 
-    @RequestMapping(value = "/deletefolder/{mail}/{name}", method = RequestMethod.GET)
-    public  String deletefolder(@PathVariable String mail, @PathVariable String name) throws Exception {
+    @RequestMapping(value = "/deletefolder/{mail}/{name}", method = RequestMethod.DELETE)
+    public  result deletefolder(@PathVariable String mail, @PathVariable String name) throws Exception {
         return controll.daletefolder(mail,name);
     }
     @RequestMapping(value = "/renamefolder/{mail}/{name}/{name1}", method = RequestMethod.GET)

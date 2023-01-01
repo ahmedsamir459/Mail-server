@@ -7,12 +7,17 @@ import com.example.mailServer.Mail;
 import com.example.mailServer.Modules.Service;
 import com.example.mailServer.Modules.result;
 import com.example.mailServer.Validator;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,7 +29,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,7 +43,6 @@ public class Controll {
     Validator vl=new Validator();
     Service sr = new Service();
     FileSinglton myfile;
-
 
     public Map<String, String> load_contact(String filename) throws IOException, ParseException {
         Map<String, String> map=new HashMap<>();
@@ -68,9 +75,7 @@ public class Controll {
         try {
             Path path = Paths.get(myfile.getPath());
             int size = (int) Files.size(path);
-            System.out.println(size);
             if (size != 0) {
-                System.out.println("try");
                 result = vl.check_user_signup(email,password,users,myfile.getMyObj());
                 System.out.println(result);
                 if (result.equals("not found")) {
@@ -117,13 +122,13 @@ public class Controll {
         JSONParser parser = new JSONParser();
         org.json.simple.JSONArray array;
         array = (org.json.simple.JSONArray) parser.parse(new FileReader(filename));
-        System.out.println(array);
         return array;}
         catch(Exception e){
             return new JSONArray();
         }
 
     }
+
     public void save_mails(String filename, org.json.simple.JSONArray array) throws IOException {
         FileWriter myWriter = new FileWriter(filename);
         myWriter.write(array.toString());
@@ -143,13 +148,8 @@ public class Controll {
         try{
             int sz1=(int) Files.size(path);
             int sz2=(int) Files.size(path_2);
-            if(sz1!=0) {
-                array = load_mails(path1);
-            }
-            if(sz2!=0){
-                array1=load_mails(path2);
-            }
-
+            if(sz1!=0) {array = load_mails(path1);}
+            if(sz2!=0){array1=load_mails(path2);}
             array.add(jsonObject);
             array1.add(jsonObject);
             save_mails(path1,array);
@@ -172,11 +172,8 @@ public class Controll {
         array1.addAll(result);
         return array1;
     }
-    public void save_attachments(ArrayList<File> array) {
-        for (int i = 0; i < array.size(); i++)
-            System.out.print(array.get(i) + " ");
-    }
-    public String delete_mail(String filename, String email, Mail index) throws Exception {
+
+    public result delete_mail(String filename, String email, Mail index) throws Exception {
         String path1=myfile.getDir_path()+"\\"+get_name(email)+"\\"+filename+".json";
         JSONArray array=load_mails(path1);
         try {
@@ -188,18 +185,18 @@ public class Controll {
                 }
             }
             save_mails(path1, array);
-            return "deleted";
+            return new result("deleted", true);
         }
         catch(Exception e){
-            return "not deleted";
+            return new result("error",false);
         }
     }
-    public String delete_all(String filename, String email) throws Exception {
+    public result delete_all(String filename, String email) throws Exception {
         String path1=myfile.getDir_path()+"\\"+get_name(email)+"\\"+filename+".json";
         FileWriter myWriter = new FileWriter(path1);
         myWriter.write("");
         myWriter.close();
-        return "deleted";
+        return new result("deleted",true);
     }
 
     public String move_mail(String filename1, String filename2, String email, Mail index) throws Exception {
@@ -226,19 +223,12 @@ public class Controll {
         String path2=myfile.getDir_path()+"\\"+get_name(email)+"\\"+filename2+".json";
         JSONArray array1=load_mails(path1);
         JSONArray array2=load_mails(path2);
-//        System.out.println("ana hna");
-//        System.out.println(array1);
-//        System.out.println(array2);
         for(int i=0;i<array1.size();i++)
         {
             System.out.println(array1.get(i));
             array2.add(array1.get(i));
             array1.remove(i);
         }
-//        System.out.println("ooooooooooooooooooooohh");
-//        System.out.println(array2);
-//        System.out.println(array1);
-
         save_mails(path1,array1);
         save_mails(path2,array2);
         return "done";
@@ -255,15 +245,15 @@ public class Controll {
 
         }
     }
-    public String daletefolder(String mail, String filename) throws Exception {
+    public result daletefolder(String mail, String filename) throws Exception {
         String path=myfile.getDir_path()+"\\"+get_name(mail)+"\\"+filename+".json";
         File file = new File(path);
         if (file.delete()) {
             System.out.println("File deleted: " + file.getName());
-            return "File deleted: " + file.getName();
+            return new result("File deleted: " + file.getName(),true);
         } else {
             System.out.println("File not found.");
-            return "File not found.";
+            return new result("File not found.",false);
 
         }
     }
@@ -295,12 +285,12 @@ public class Controll {
         save_contact(path,m);
         return "done";
     }
-    public String deletecontact(String mail, String mail2) throws Exception {
+    public result deletecontact(String mail, String mail2) throws Exception {
         String path=myfile.getDir_path()+"\\"+get_name(mail)+"\\"+"contacts.json";
         Map<String,String> map=load_contact(path);
         map.remove(mail2);
         save_contact(path,map);
-        return "done";
+        return new result("done",true);
     }
 
     public String renamefolder(String mail, String filename1, String filename2) throws Exception {
@@ -367,15 +357,20 @@ public class Controll {
         ArrayList<String> names=new ArrayList<>();
         String filename1=get_name(to);
         String filename2=get_name(from);
-        String path=myfile.getDir_path();
-
         for(MultipartFile attachment:attachments){
             try {
                 names.add(attachment.getOriginalFilename());
-                Path copyLocation = Paths.get(path +File.separator+filename1 +File.separator + StringUtils.cleanPath(attachment.getOriginalFilename()));
-                Path copyLocation1 = Paths.get(path +File.separator+filename2 +File.separator + StringUtils.cleanPath(attachment.getOriginalFilename()));
+                Path copyLocation = Paths.get(myfile.getDir_path() +File.separator+filename1 +File.separator + StringUtils.cleanPath(attachment.getOriginalFilename()));
                 Files.copy(attachment.getInputStream(),copyLocation, StandardCopyOption.REPLACE_EXISTING);
-                Files.copy(attachment.getInputStream(),copyLocation1, StandardCopyOption.REPLACE_EXISTING);
+                try{
+                Path copyLocation1 = Paths.get(myfile.getDir_path() +File.separator+filename2 +File.separator + StringUtils.cleanPath(attachment.getOriginalFilename()));
+                Files.copy(attachment.getInputStream(),copyLocation1, StandardCopyOption.REPLACE_EXISTING);}
+                catch (Exception e)
+                {
+                    System.out.println("File already exists");
+                }
+
+
 
 
             } catch (IOException e) {
