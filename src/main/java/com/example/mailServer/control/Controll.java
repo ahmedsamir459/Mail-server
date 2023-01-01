@@ -105,6 +105,18 @@ public class Controll {
         return array;
 
     }
+    public org.json.simple.JSONArray load_mails_general(String type,String filename ) throws Exception {
+      String  filename1=get_name(filename);
+        System.out.println(filename1);
+        System.out.println("ok");
+        JSONParser parser = new JSONParser();
+        org.json.simple.JSONArray array;
+        FileReader fileReader=new FileReader(myfile.getDir_path()+"\\"+filename1+"\\"+type+".json");
+        array = (org.json.simple.JSONArray) parser.parse(fileReader);
+        System.out.println(array);
+        return array;
+
+    }
     public void save_mails(String filename, org.json.simple.JSONArray array) throws IOException {
         FileWriter myWriter = new FileWriter(filename);
         myWriter.write(array.toString());

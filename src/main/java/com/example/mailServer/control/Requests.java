@@ -95,6 +95,12 @@ return  json1;
 
         return names;
     }
+    @PostMapping("/homepage/{type}/{email}")
+    public JSONArray load(@PathVariable String type,@PathVariable String email) throws Exception {
+        JSONArray array=new JSONArray();
+       array= controll.load_mails_general(type,email);
+       return array;
+    }
     @GetMapping("/getfiles/{fileName}/{from}")
     public ResponseEntity<UrlResource>  getFiles (@PathVariable String fileName,@PathVariable String from) throws Exception {
             Path paths = controll.getfiles(fileName,from);
