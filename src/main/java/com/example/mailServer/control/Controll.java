@@ -44,15 +44,15 @@ public class Controll {
     Service sr = new Service();
     FileSinglton myfile;
 
-    public Map<String, String> load_contact(String filename) throws IOException, ParseException {
-        Map<String, String> map=new HashMap<>();
+    public Map<String, String[]> load_contact(String filename) throws IOException, ParseException {
+        Map<String, String[]> map=new HashMap<>();
         ObjectMapper mapper = new ObjectMapper();
         File file = new File(filename);
-        map = mapper.readValue(file, new TypeReference<Map<String, String>>() {
+        map = mapper.readValue(file, new TypeReference<Map<String, String[]>>() {
         });
         return map;
     }
-    public void save_contact(String filename,  Map<String,String> m) throws IOException {
+    public void save_contact(String filename,  Map<String,String[]> m) throws IOException {
         FileWriter myWriter = new FileWriter(filename);
         myWriter.write(new JSONObject(m).toString());
         myWriter.close();
@@ -67,8 +67,8 @@ public class Controll {
         return filename;
     }
 
-    public String signin(String email2, String password) throws Exception {
-        return vl.check_user(email2,password,users,myfile.getMyObj());
+    public String signin(String email, String password) throws Exception {
+        return vl.check_user(email,password,users,myfile.getMyObj());
     }
     public String signup(String email,String password) throws Exception {
         String result="";
@@ -245,7 +245,7 @@ public class Controll {
 
         }
     }
-    public result daletefolder(String mail, String filename) throws Exception {
+    public result deletefolder(String mail, String filename) throws Exception {
         String path=myfile.getDir_path()+"\\"+get_name(mail)+"\\"+filename+".json";
         File file = new File(path);
         if (file.delete()) {
@@ -269,26 +269,36 @@ public class Controll {
         return null ;
 
     }
-    public String addcontact(String mail, String name,String mail2) throws Exception {
+    public String addcontact(String mail, String name,String [] mail2) throws Exception {
         String path=myfile.getDir_path()+"\\"+get_name(mail)+"\\"+"contacts.json";
         sr.create_file(path);
-        Map<String,String>m=new HashMap<>();
-        if(sr.getSize()!=0){m=load_contact(path);}
-        m.put(mail2,name);
+        Map<String,String[]>m=new HashMap<>();
+        if(sr.getSize()!=0){
+            m=load_contact(path);
+            if(m.containsKey(name)){
+                return "contact already exists";
+            }
+        }
+        m.put(name,mail2);
         save_contact(path,m);
         return "done";
     }
-    public String rename_contact(String mail, String name,String mail2) throws Exception {
+    public String rename_contact(String mail, String name,String name2) throws Exception {
         String path=myfile.getDir_path()+"\\"+get_name(mail)+"\\"+"contacts.json";
-        Map<String,String> m=load_contact(path);
-        m.replace(mail2,name);
-        save_contact(path,m);
-        return "done";
+        Map<String,String[]> m=load_contact(path);
+        if(m.containsKey(name)){
+            String [] m2=m.get(name);
+            m.remove(name);
+            m.put(name2,m2);
+            save_contact(path,m);
+            return "done";
+        }
+        return "contact not found";
     }
-    public result deletecontact(String mail, String mail2) throws Exception {
+    public result deletecontact(String mail, String name) throws Exception {
         String path=myfile.getDir_path()+"\\"+get_name(mail)+"\\"+"contacts.json";
-        Map<String,String> map=load_contact(path);
-        map.remove(mail2);
+        Map<String,String[]> map=load_contact(path);
+        map.remove(name);
         save_contact(path,map);
         return new result("done",true);
     }
@@ -369,10 +379,6 @@ public class Controll {
                 {
                     System.out.println("File already exists");
                 }
-
-
-
-
             } catch (IOException e) {
                 e.printStackTrace();
             }

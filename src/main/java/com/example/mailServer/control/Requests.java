@@ -78,28 +78,28 @@ public class Requests {
         return controll.move_mail(filename,filename1,email,mail);
     }
 
-    @RequestMapping(value = "/addcontact/{mail}/{name}/{mail2}", method = RequestMethod.GET)
-    public  String addcontact(@PathVariable String mail,@PathVariable String name, @PathVariable String mail2) throws Exception {
+    @RequestMapping(value = "/addcontact/{mail}/{name}", method = RequestMethod.POST)
+    public  String addcontact(@PathVariable String mail,@PathVariable String name, @RequestBody String[] mail2) throws Exception {
         return controll.addcontact(mail,name,mail2);
     }
 
-    @RequestMapping(value = "/renamecontact/{mail}/{name}/{mail2}", method = RequestMethod.GET)
-    public  String renamecontact(@PathVariable String mail,@PathVariable String name, @PathVariable String mail2) throws Exception {
-        return controll.rename_contact(mail,name,mail2);
+    @RequestMapping(value = "/renamecontact/{mail}/{name}/{name2}", method = RequestMethod.POST)
+    public  String renamecontact(@PathVariable String mail,@PathVariable String name, @PathVariable String name2) throws Exception {
+        return controll.rename_contact(mail,name,name2);
     }
-    @RequestMapping(value = "/deletecontact/{mail}/{mail2}", method = RequestMethod.DELETE)
-    public  result deletecontact(@PathVariable String mail, @PathVariable String mail2) throws Exception {
-        return controll.deletecontact(mail,mail2);
+    @RequestMapping(value = "/deletecontact/{mail}/{name}", method = RequestMethod.DELETE)
+    public  result deletecontact(@PathVariable String mail, @PathVariable String name) throws Exception {
+        return controll.deletecontact(mail,name);
     }
     @RequestMapping(value = "/loadcontact/{mail}", method = RequestMethod.GET)
-    public Map<String, String> loadcontact(@PathVariable String mail) throws Exception {
+    public Map<String, String[]> loadcontact(@PathVariable String mail) throws Exception {
         String path=controll.myfile.getDir_path()+"\\"+controll.get_name(mail)+"\\"+"contacts.json";
         return controll.load_contact(path);
     }
 
     @RequestMapping(value = "/deletefolder/{mail}/{name}", method = RequestMethod.DELETE)
     public  result deletefolder(@PathVariable String mail, @PathVariable String name) throws Exception {
-        return controll.daletefolder(mail,name);
+        return controll.deletefolder(mail,name);
     }
     @RequestMapping(value = "/renamefolder/{mail}/{name}/{name1}", method = RequestMethod.GET)
     public  String renamefolder(@PathVariable String mail, @PathVariable String name,@PathVariable String name1) throws Exception {
