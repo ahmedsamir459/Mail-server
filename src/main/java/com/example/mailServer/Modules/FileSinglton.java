@@ -1,12 +1,11 @@
-package com.example.mailServer.Database;
-
-import com.example.mailServer.Modules.Service;
+package com.example.mailServer.Modules;
 
 public class FileSinglton {
     private static FileSinglton instance = null;
     private String path = "src\\main\\java\\com\\example\\mailServer\\Database\\users\\Mail.json";
     private String dir_path = "src\\main\\java\\com\\example\\mailServer\\Database\\users";
     private java.io.File myObj= new java.io.File(path);;
+
     private int size=0;
     private Service sr=new Service();
 

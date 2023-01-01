@@ -6,13 +6,17 @@ import org.json.simple.JSONArray;
 
 import java.util.ArrayList;
 
-public class EmailsFilteringCustomizedCriteria implements EmailsCriteriaI {
+public class EmailFilter implements Filter {
     private String feature;
     private String target;
 
-    public EmailsFilteringCustomizedCriteria(String feature, String target){
+    public EmailFilter(String feature, String target){
         this.feature = feature;
         this.target = target;
+    }
+    public EmailFilter(String feature,int target){
+        this.feature = feature;
+        this.target = String.valueOf(target);
     }
 
     public String getFeature() {
@@ -40,23 +44,21 @@ public class EmailsFilteringCustomizedCriteria implements EmailsCriteriaI {
             Mail mail = gson.fromJson(emails.get(i).toString(), Mail.class);
             emailsList.add(mail);
         }
-
         switch (this.feature.toLowerCase()){
             case "subject":
                 emailsList.stream().filter(email -> email.getSubject().equalsIgnoreCase(this.target)).forEach(filteredEmails::add);
-//                for(EmailI email:emails){
-//                    if(email.getSubject().equalsIgnoreCase(this.target)){
-//                        filteredEmails.add(email);
-//                    }
-//                }
                 break;
             case "from":
                 emailsList.stream().filter(email -> email.getFrom().equalsIgnoreCase(this.target)).forEach(filteredEmails::add);
-//                for(EmailI email:emails){
-//                    if(email.getSenderUsername().equalsIgnoreCase(this.target)){
-//                        filteredEmails.add(email);
-//                    }
-//                }
+                break;
+            case "to":
+                emailsList.stream().filter(email -> email.getTo().equalsIgnoreCase(this.target)).forEach(filteredEmails::add);
+                break;
+            case "body":
+                emailsList.stream().filter(email -> email.getBody().equalsIgnoreCase(this.target)).forEach(filteredEmails::add);
+                break;
+            case "priority":
+                emailsList.stream().filter(email ->String.valueOf(email.getPriority()).equalsIgnoreCase(this.target)).forEach(filteredEmails::add);
                 break;
 
         }

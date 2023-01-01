@@ -4,7 +4,7 @@ import org.json.simple.JSONArray;
 
 import java.util.ArrayList;
 
-public interface EmailsCriteriaI {
+public interface Filter {
     ArrayList<Mail> meetCriteria(JSONArray emails);
 
 }

@@ -2,6 +2,8 @@ package com.example.mailServer.Modules;
 
 import com.example.mailServer.Mail;
 
+import java.util.Map;
+
 public class user {
    private   String email;
    private String pass;
@@ -10,9 +12,10 @@ public class user {
     private Mail[] trash;
     private Mail[] draft;
     private Mail[] sent;
+    private Map<String,Mail[]> folders;
 
 
-    public user(String email, String pass, Mail[] inbox, String[] contacts, Mail[] trash, Mail[] draft, Mail[] sent) {
+    public user(String email, String pass, Mail[] inbox, String[] contacts, Mail[] trash, Mail[] draft, Mail[] sent, Map<String, Mail[]> folders) {
         this.email = email;
         this.pass = pass;
         this.inbox = inbox;
@@ -20,6 +23,7 @@ public class user {
         this.trash = trash;
         this.draft = draft;
         this.sent = sent;
+        this.folders = folders;
     }
 
     public String getEmail() {
@@ -76,5 +80,19 @@ public class user {
 
     public void setSent(Mail[] sent) {
         this.sent = sent;
+    }
+    public Map<String, Mail[]> getFolders() {
+        return folders;
+    }
+    public void setFolders(Map<String, Mail[]> folders) {
+        this.folders = folders;
+    }
+    public void addFolder(String name,Mail[] mails)
+    {
+        folders.put(name,mails);
+    }
+    public void removeFolder(String name)
+    {
+        folders.remove(name);
     }
 }

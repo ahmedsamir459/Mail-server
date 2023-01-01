@@ -1,16 +1,43 @@
 package com.example.mailServer;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Date;
 
 public class Mail {
    private String from;
    private String  to;
+
+   public String[] getAttachment() {
+      return attachment;
+   }
+
+   public void setAttachment(String[] attachment) {
+      this.attachment = attachment;
+   }
+
+   public Date getDate() {
+      return date;
+   }
+
+   public void setDate(Date date) {
+      this.date = date;
+   }
+
    private String subject;
 
    private String body;
    private int priority;
-   private  File [] attachments;
-//   private String [] attachments;
+   private String [] attachment;
+   private Date date;
+
+   public String[] getAttachments() {
+      return attachment;
+   }
+
+   public void setAttachments(String[] attachments) {
+      this.attachment = attachments;
+   }
 
    public Mail() {
    }
@@ -54,11 +81,6 @@ public class Mail {
       this.priority = priority;
    }
 
-//   public String[] getAttachments() {
-//      return attachments;
-//   }
-//
-//   public void setAttachments(String[] attachments) {
-//      this.attachments = attachments;
-//   }
+
+
 }
