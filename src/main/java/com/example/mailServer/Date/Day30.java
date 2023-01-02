@@ -1,20 +1,18 @@
-package com.example.mailServer.Datecomp;
+package com.example.mailServer.Date;
 import com.example.mailServer.Modules.Mail;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONArray;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class Day30 {
    public JSONArray filter30days(JSONArray array) {
       ObjectMapper mapper = new ObjectMapper();
-      DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
-      LocalDateTime now = LocalDateTime.now();
+      DateAdapter dateAdapter = new DateAdapter();
       Mail[] Array = mapper.convertValue(array, Mail[].class);
-      LocalDateTime thirtyDaysAgo = now.minusDays(30);
+      LocalDateTime thirtyDaysAgo = LocalDateTime.now().minusDays(30);
       JSONArray filteredArray = new JSONArray();
       for (int i = 0; i < array.size(); i++) {
-         LocalDateTime date = LocalDateTime.parse(Array[i].getDate(), formatter);
+         LocalDateTime date = dateAdapter.aetDate(Array[i].getDate());
          if (date.isAfter(thirtyDaysAgo)) {
             filteredArray.add(array.get(i));}}
       System.out.println(filteredArray);

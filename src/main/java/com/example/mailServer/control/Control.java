@@ -1,7 +1,7 @@
 package com.example.mailServer.control;
 
 import com.example.mailServer.ContactFilter.ContactFilter;
-import com.example.mailServer.Datecomp.Day30;
+import com.example.mailServer.Date.Day30;
 import com.example.mailServer.EmailsFilter.Sort;
 import com.example.mailServer.Singlton.FileSinglton;
 import com.example.mailServer.EmailsFilter.EmailFilter;
@@ -42,9 +42,12 @@ public class Control {
         Map<String, String[]> map=new HashMap<>();
         ObjectMapper mapper = new ObjectMapper();
         File file = new File(filename);
-        map = mapper.readValue(file, new TypeReference<Map<String, String[]>>() {
-        });
-        return map;
+        if(file.length()!=0){
+            map = mapper.readValue(file, new TypeReference<Map<String, String[]>>() {
+            });
+            return map;
+        }
+        else return map;
     }
     public JSONArray load_file(String email,String filename) throws Exception {
         String path=myfile.getDir_path()+File.separator+sr.get_name(email)+File.separator+filename+".json";
