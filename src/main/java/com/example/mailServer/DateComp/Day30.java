@@ -16,7 +16,6 @@ public class Day30 {
          LocalDateTime date = dateAdapter.aetDate(Array[i].getDate());
          if (date.isAfter(thirtyDaysAgo)) {
             filteredArray.add(array.get(i));}}
-      System.out.println(filteredArray);
       return filteredArray;
    }
 }

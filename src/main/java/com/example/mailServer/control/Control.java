@@ -54,14 +54,13 @@ public class Control {
         String path=myfile.getDir_path()+File.separator+sr.get_name(email)+File.separator+filename+".json";
         if(filename.equalsIgnoreCase("trash")){
             try{
-                System.out.println("in trash");
                 JSONParser parser = new JSONParser();
                 Day30 day30=new Day30();
-                org.json.simple.JSONArray array;
-                array = (org.json.simple.JSONArray) parser.parse(new FileReader(path));
-                JSONArray array1=day30.filter30days(array);
-                System.out.println(array1);
-                return day30.filter30days(array);}
+                JSONArray array;
+                array = (JSONArray) parser.parse(new FileReader(path));
+                array=day30.filter30days(array);
+                sr.save_mails(path, array);
+                return array;}
             catch(Exception e){
                 return new JSONArray();
             }
@@ -173,11 +172,11 @@ public class Control {
         array1.addAll(result);
         return array1;
     }
-    public JSONArray sort(String email,String feature, String filename) throws Exception {
+    public JSONArray sort(String email,String feature, String filename,boolean value) throws Exception {
         String path=myfile.getDir_path()+File.separator+sr.get_name(email)+File.separator+filename+".json";
         JSONArray array=sr.load_mails(path);
         Sort sort=new Sort();
-        ArrayList array1=sort.sort(array,feature);
+        ArrayList array1=sort.sort(array,feature,value);
         JSONArray array2=new JSONArray();
         array2.addAll(array1);
 

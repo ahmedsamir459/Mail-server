@@ -1,8 +1,6 @@
 package com.example.mailServer.Iterator;
 
-import java.util.Iterator;
-
-public class ArrayIterator<T> implements Iterator<T> {
+public class ArrayIterator<T> implements Iiterator<T> {
 private final T[] array;
 private int index;
 

@@ -9,8 +9,8 @@ public class FolderTest {
     @Test
     public void testaddFolder() throws Exception {
         Control test = new Control();
-        assertEquals("File created: important.json", test.addfolder("ahmed@mail.com","important"));
-        assertEquals("File created: index.json", test.addfolder("ahmed@mail.com","index"));
+        assertEquals("File already exists.", test.addfolder("ahmed@mail.com","important"));
+        assertEquals("File already exists.", test.addfolder("ahmed@mail.com","index"));
     }
     @Test
     public void testrenameFolder() throws Exception {

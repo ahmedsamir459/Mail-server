@@ -2,9 +2,7 @@ package com.example.mailServer.Iterator;
 
 import org.json.simple.JSONArray;
 
-import java.util.Iterator;
-
-public class JsonArrayIterator<T> implements Iterator<T> {
+public class JsonArrayIterator<T> implements Iiterator<T> {
 
     private final JSONArray array;
     private int index;

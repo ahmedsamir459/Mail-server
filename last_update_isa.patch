@@ -1,0 +1,723 @@
+Index: src/main/java/com/example/mailServer/Adapter/ArrayAdapter.java
+===================================================================
+diff --git a/src/main/java/com/example/mailServer/Adapter/ArrayAdapter.java b/src/main/java/com/example/mailServer/Adapter/ArrayAdapter.java
+new file mode 100644
+--- /dev/null	(revision 12396ceb8c44e8e1a5cc4fa800c05818a33b5102)
++++ b/src/main/java/com/example/mailServer/Adapter/ArrayAdapter.java	(revision 12396ceb8c44e8e1a5cc4fa800c05818a33b5102)
+@@ -0,0 +1,20 @@
++package com.example.mailServer.Adapter;
++
++import com.example.mailServer.Modules.Mail;
++import com.google.gson.Gson;
++import org.json.simple.JSONArray;
++
++import java.util.ArrayList;
++
++public class ArrayAdapter {
++    private ArrayList<Mail> myarray;
++    public ArrayList<Mail> getMyarray(JSONArray emails) {
++        myarray= new ArrayList<>();
++        for (int i=0;i<emails.size();i++){
++            Gson gson = new Gson();
++            Mail mail = gson.fromJson(emails.get(i).toString(), Mail.class);
++            myarray.add(mail);
++        }
++        return myarray;
++    }
++}
+Index: src/main/java/com/example/mailServer/Date/DateAdapter.java
+===================================================================
+diff --git a/src/main/java/com/example/mailServer/Date/DateAdapter.java b/src/main/java/com/example/mailServer/Adapter/DateAdapter.java
+rename from src/main/java/com/example/mailServer/Date/DateAdapter.java
+rename to src/main/java/com/example/mailServer/Adapter/DateAdapter.java
+--- a/src/main/java/com/example/mailServer/Date/DateAdapter.java	(revision 6a52057892bcf3f1863f580bbb4f950c49101952)
++++ b/src/main/java/com/example/mailServer/Adapter/DateAdapter.java	(revision 12396ceb8c44e8e1a5cc4fa800c05818a33b5102)
+@@ -1,4 +1,4 @@
+-package com.example.mailServer.Date;
++package com.example.mailServer.Adapter;
+ 
+ import java.time.LocalDateTime;
+ import java.time.format.DateTimeFormatter;
+Index: src/main/java/com/example/mailServer/Adapter/MapAdapter.java
+===================================================================
+diff --git a/src/main/java/com/example/mailServer/Adapter/MapAdapter.java b/src/main/java/com/example/mailServer/Adapter/MapAdapter.java
+new file mode 100644
+--- /dev/null	(revision 12396ceb8c44e8e1a5cc4fa800c05818a33b5102)
++++ b/src/main/java/com/example/mailServer/Adapter/MapAdapter.java	(revision 12396ceb8c44e8e1a5cc4fa800c05818a33b5102)
+@@ -0,0 +1,18 @@
++package com.example.mailServer.Adapter;
++
++import com.fasterxml.jackson.core.type.TypeReference;
++import com.fasterxml.jackson.databind.ObjectMapper;
++
++import java.io.File;
++import java.io.IOException;
++import java.util.HashMap;
++
++public class MapAdapter {
++    ObjectMapper mapper;
++    public HashMap<String,String[]> getSMap(File myObj) throws IOException {
++        mapper = new ObjectMapper();
++        HashMap<String,String[]> users = mapper.readValue(myObj, new TypeReference<HashMap<String,String[]>>() {
++        });
++        return users;}
++
++}
+Index: src/main/java/com/example/mailServer/Database/users/ahmed/contacts.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/example/mailServer/Database/users/ahmed/contacts.json b/src/main/java/com/example/mailServer/Database/users/ahmed/contacts.json
+--- a/src/main/java/com/example/mailServer/Database/users/ahmed/contacts.json	(revision 6a52057892bcf3f1863f580bbb4f950c49101952)
++++ b/src/main/java/com/example/mailServer/Database/users/ahmed/contacts.json	(revision 12396ceb8c44e8e1a5cc4fa800c05818a33b5102)
+@@ -1,0 +1,1 @@
++{"hamed":["ahmed@mail.com","ahmedsamir.com"]}
+\ No newline at end of file
+Index: src/main/java/com/example/mailServer/Database/users/ahmed/draft.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/example/mailServer/Database/users/ahmed/draft.json b/src/main/java/com/example/mailServer/Database/users/ahmed/draft.json
+--- a/src/main/java/com/example/mailServer/Database/users/ahmed/draft.json	(revision 6a52057892bcf3f1863f580bbb4f950c49101952)
++++ b/src/main/java/com/example/mailServer/Database/users/ahmed/draft.json	(revision 12396ceb8c44e8e1a5cc4fa800c05818a33b5102)
+@@ -1,0 +1,1 @@
++[]
+\ No newline at end of file
+Index: src/main/java/com/example/mailServer/Database/users/ahmed/inbox.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/example/mailServer/Database/users/ahmed/inbox.json b/src/main/java/com/example/mailServer/Database/users/ahmed/inbox.json
+--- a/src/main/java/com/example/mailServer/Database/users/ahmed/inbox.json	(revision 6a52057892bcf3f1863f580bbb4f950c49101952)
++++ b/src/main/java/com/example/mailServer/Database/users/ahmed/inbox.json	(revision 12396ceb8c44e8e1a5cc4fa800c05818a33b5102)
+@@ -1,0 +1,1 @@
++[{"date":"2023-01-01T23:56:08.980Z","attachment":["jo.io"],"subject":"fathy","from":"ahmed@mail.com","to":"mado@mail.com","priority":9,"body":"yousef"},{"date":"2023-01-01T23:56:08.980Z","attachment":["jo.io"],"subject":"hamo","from":"ahmed@mail.com","to":"mado@mail.com","priority":9,"body":"yousef"},{"date":"2023-01-01T23:56:08.980Z","attachment":["jo.io"],"subject":"hamo","from":"ahmed@mail.com","to":"mado@mail.com","priority":9,"body":"ana hamed el gamed"}]
+\ No newline at end of file
+Index: src/main/java/com/example/mailServer/Database/users/ahmed/sent.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/example/mailServer/Database/users/ahmed/sent.json b/src/main/java/com/example/mailServer/Database/users/ahmed/sent.json
+--- a/src/main/java/com/example/mailServer/Database/users/ahmed/sent.json	(revision 6a52057892bcf3f1863f580bbb4f950c49101952)
++++ b/src/main/java/com/example/mailServer/Database/users/ahmed/sent.json	(revision 12396ceb8c44e8e1a5cc4fa800c05818a33b5102)
+@@ -1,1 +1,0 @@
+-[]
+\ No newline at end of file
+Index: src/main/java/com/example/mailServer/Database/users/mado/contacts.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/example/mailServer/Database/users/mado/contacts.json b/src/main/java/com/example/mailServer/Database/users/mado/contacts.json
+--- a/src/main/java/com/example/mailServer/Database/users/mado/contacts.json	(revision 6a52057892bcf3f1863f580bbb4f950c49101952)
++++ b/src/main/java/com/example/mailServer/Database/users/mado/contacts.json	(revision 12396ceb8c44e8e1a5cc4fa800c05818a33b5102)
+@@ -1,1 +1,0 @@
+-["seif@mail.com"]
+\ No newline at end of file
+Index: src/main/java/com/example/mailServer/Database/users/mado/draft.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/example/mailServer/Database/users/mado/draft.json b/src/main/java/com/example/mailServer/Database/users/mado/draft.json
+--- a/src/main/java/com/example/mailServer/Database/users/mado/draft.json	(revision 6a52057892bcf3f1863f580bbb4f950c49101952)
++++ b/src/main/java/com/example/mailServer/Database/users/mado/draft.json	(revision 12396ceb8c44e8e1a5cc4fa800c05818a33b5102)
+@@ -1,0 +1,1 @@
++[{"date":"2023-01-01T23:56:08.980Z","attachment":[""],"subject":"hamo","from":"ahmed@mail.com","to":"mado@mail.com","priority":9,"body":"ana hamed el gamed"},{"date":"2023-01-01T23:56:08.980Z","attachment":["jo.io"],"subject":"hamo","from":"ahmed@mail.com","to":"mado@mail.com","priority":9,"body":"ana hamed el gamed"},{"date":"2023-01-01T23:56:08.980Z","attachment":["jo.io"],"subject":"hamo","from":"ahmed@mail.com","to":"mado@mail.com","priority":9,"body":"ana hamed el gamed"}]
+\ No newline at end of file
+Index: src/main/java/com/example/mailServer/Database/users/mado/trash.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/example/mailServer/Database/users/mado/trash.json b/src/main/java/com/example/mailServer/Database/users/mado/trash.json
+--- a/src/main/java/com/example/mailServer/Database/users/mado/trash.json	(revision 6a52057892bcf3f1863f580bbb4f950c49101952)
++++ b/src/main/java/com/example/mailServer/Database/users/mado/trash.json	(revision 12396ceb8c44e8e1a5cc4fa800c05818a33b5102)
+@@ -1,0 +1,1 @@
++[{"date":"2023-01-01T23:56:08.980Z","attachment":["jo.io"],"subject":"hamo","from":"ahmed@mail.com","to":"mado@mail.com","priority":9,"body":"ana hamed el gamed"},{"date":"2023-01-01T23:56:08.980Z","attachment":["jo.io"],"subject":"hamo","from":"ahmed@mail.com","to":"mado@mail.com","priority":9,"body":"ana hamed el gamed"}]
+\ No newline at end of file
+Index: src/main/java/com/example/mailServer/Date/DateComp.java
+===================================================================
+diff --git a/src/main/java/com/example/mailServer/Date/DateComp.java b/src/main/java/com/example/mailServer/DateComp/DateComp.java
+rename from src/main/java/com/example/mailServer/Date/DateComp.java
+rename to src/main/java/com/example/mailServer/DateComp/DateComp.java
+--- a/src/main/java/com/example/mailServer/Date/DateComp.java	(revision 6a52057892bcf3f1863f580bbb4f950c49101952)
++++ b/src/main/java/com/example/mailServer/DateComp/DateComp.java	(revision 12396ceb8c44e8e1a5cc4fa800c05818a33b5102)
+@@ -1,5 +1,6 @@
+-package com.example.mailServer.Date;
++package com.example.mailServer.DateComp;
+ 
++import com.example.mailServer.Adapter.DateAdapter;
+ import com.example.mailServer.Modules.Mail;
+ 
+ import java.time.LocalDateTime;
+Index: src/main/java/com/example/mailServer/Date/Day30.java
+===================================================================
+diff --git a/src/main/java/com/example/mailServer/Date/Day30.java b/src/main/java/com/example/mailServer/DateComp/Day30.java
+rename from src/main/java/com/example/mailServer/Date/Day30.java
+rename to src/main/java/com/example/mailServer/DateComp/Day30.java
+--- a/src/main/java/com/example/mailServer/Date/Day30.java	(revision 6a52057892bcf3f1863f580bbb4f950c49101952)
++++ b/src/main/java/com/example/mailServer/DateComp/Day30.java	(revision 12396ceb8c44e8e1a5cc4fa800c05818a33b5102)
+@@ -1,4 +1,5 @@
+-package com.example.mailServer.Date;
++package com.example.mailServer.DateComp;
++import com.example.mailServer.Adapter.DateAdapter;
+ import com.example.mailServer.Modules.Mail;
+ import com.fasterxml.jackson.databind.ObjectMapper;
+ import org.json.simple.JSONArray;
+Index: src/main/java/com/example/mailServer/EmailsFilter/EmailFilter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/example/mailServer/EmailsFilter/EmailFilter.java b/src/main/java/com/example/mailServer/EmailsFilter/EmailFilter.java
+--- a/src/main/java/com/example/mailServer/EmailsFilter/EmailFilter.java	(revision 6a52057892bcf3f1863f580bbb4f950c49101952)
++++ b/src/main/java/com/example/mailServer/EmailsFilter/EmailFilter.java	(revision 12396ceb8c44e8e1a5cc4fa800c05818a33b5102)
+@@ -1,7 +1,7 @@
+ package com.example.mailServer.EmailsFilter;
+ 
++import com.example.mailServer.Adapter.ArrayAdapter;
+ import com.example.mailServer.Modules.Mail;
+-import com.google.gson.Gson;
+ import org.json.simple.JSONArray;
+ 
+ import java.util.ArrayList;
+@@ -38,13 +38,9 @@
+ 
+     @Override
+     public ArrayList<Mail> meetCriteria(JSONArray emails) {
++        ArrayAdapter arrayAdapter = new ArrayAdapter();
+         ArrayList<Mail> filteredEmails = new ArrayList<>();
+-        ArrayList<Mail> emailsList = new ArrayList<>();
+-        for (int i=0;i<emails.size();i++){
+-            Gson gson = new Gson();
+-            Mail mail = gson.fromJson(emails.get(i).toString(), Mail.class);
+-            emailsList.add(mail);
+-        }
++        ArrayList<Mail> emailsList =arrayAdapter.getMyarray(emails);
+         switch (this.feature.toLowerCase()){
+             case "subject":
+                 emailsList.stream().filter(email -> email.getSubject().toLowerCase().contains(this.target.toLowerCase())).forEach(filteredEmails::add);
+@@ -64,6 +60,9 @@
+             case "attachment":
+                 emailsList.stream().filter(email -> Arrays.stream(email.getAttachment()).filter(attachment -> attachment.toLowerCase().contains(this.target.toLowerCase())).count() > 0).forEach(filteredEmails::add);
+                 break;
++            case "date":
++                emailsList.stream().filter(email -> email.getDate().toLowerCase().contains(this.target.toLowerCase())).forEach(filteredEmails::add);
++                break;
+ 
+         }
+         return filteredEmails;
+Index: src/main/java/com/example/mailServer/EmailsFilter/Sort.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/example/mailServer/EmailsFilter/Sort.java b/src/main/java/com/example/mailServer/EmailsFilter/Sort.java
+--- a/src/main/java/com/example/mailServer/EmailsFilter/Sort.java	(revision 6a52057892bcf3f1863f580bbb4f950c49101952)
++++ b/src/main/java/com/example/mailServer/EmailsFilter/Sort.java	(revision 12396ceb8c44e8e1a5cc4fa800c05818a33b5102)
+@@ -1,6 +1,6 @@
+ package com.example.mailServer.EmailsFilter;
+ 
+-import com.example.mailServer.Date.DateComp;
++import com.example.mailServer.DateComp.DateComp;
+ import com.example.mailServer.Modules.Mail;
+ import com.fasterxml.jackson.core.JsonProcessingException;
+ import com.fasterxml.jackson.databind.ObjectMapper;
+Index: src/main/java/com/example/mailServer/Iterator/ArrayIterator.java
+===================================================================
+diff --git a/src/main/java/com/example/mailServer/Iterator/ArrayIterator.java b/src/main/java/com/example/mailServer/Iterator/ArrayIterator.java
+new file mode 100644
+--- /dev/null	(revision 12396ceb8c44e8e1a5cc4fa800c05818a33b5102)
++++ b/src/main/java/com/example/mailServer/Iterator/ArrayIterator.java	(revision 12396ceb8c44e8e1a5cc4fa800c05818a33b5102)
+@@ -0,0 +1,26 @@
++package com.example.mailServer.Iterator;
++
++import java.util.Iterator;
++
++public class ArrayIterator<T> implements Iterator<T> {
++private final T[] array;
++private int index;
++
++    public ArrayIterator(T[] array) {
++        this.array = array;
++        this.index = 0;
++    }
++
++    @Override
++    public boolean hasNext() {
++        return index< array.length;
++    }
++
++    @Override
++    public T next() {
++        return array[index];
++    }
++    public void increment(){
++        index++;
++    }
++}
+Index: src/main/java/com/example/mailServer/Iterator/JsonArrayIterator.java
+===================================================================
+diff --git a/src/main/java/com/example/mailServer/Iterator/JsonArrayIterator.java b/src/main/java/com/example/mailServer/Iterator/JsonArrayIterator.java
+new file mode 100644
+--- /dev/null	(revision 12396ceb8c44e8e1a5cc4fa800c05818a33b5102)
++++ b/src/main/java/com/example/mailServer/Iterator/JsonArrayIterator.java	(revision 12396ceb8c44e8e1a5cc4fa800c05818a33b5102)
+@@ -0,0 +1,36 @@
++package com.example.mailServer.Iterator;
++
++import org.json.simple.JSONArray;
++
++import java.util.Iterator;
++
++public class JsonArrayIterator<T> implements Iterator<T> {
++
++    private final JSONArray array;
++    private int index;
++
++    public int getIndex() {
++        return index;
++    }
++
++    public void setIndex(int index) {
++        this.index = index;
++    }
++
++    public JsonArrayIterator(JSONArray array) {
++        this.array = array;
++        this.index = 0;
++    }
++    @Override
++    public boolean hasNext() {
++        return index < array.size();
++    }
++    @Override
++    public T next() {
++        return (T) array.get(index);
++    }
++    public void increment(){
++        index++;
++    }
++
++}
+Index: src/main/java/com/example/mailServer/Iterator/MapIterator.java
+===================================================================
+diff --git a/src/main/java/com/example/mailServer/Iterator/MapIterator.java b/src/main/java/com/example/mailServer/Iterator/MapIterator.java
+new file mode 100644
+--- /dev/null	(revision 12396ceb8c44e8e1a5cc4fa800c05818a33b5102)
++++ b/src/main/java/com/example/mailServer/Iterator/MapIterator.java	(revision 12396ceb8c44e8e1a5cc4fa800c05818a33b5102)
+@@ -0,0 +1,19 @@
++package com.example.mailServer.Iterator;
++import java.util.Iterator;
++import java.util.Map;
++
++public class MapIterator<K,V> implements Iterator<Map.Entry<K,V>> {
++    public final Iterator<Map.Entry<K,V>> iterator;
++    public MapIterator(Map<K, V> map) {
++        this.iterator = map.entrySet().iterator();
++    }
++    @Override
++    public boolean hasNext() {
++        return iterator.hasNext();
++    }
++
++    @Override
++    public Map.Entry<K, V> next() {
++        return iterator.next();
++    }
++}
+\ No newline at end of file
+Index: src/main/java/com/example/mailServer/Vaildator/Validator.java
+===================================================================
+diff --git a/src/main/java/com/example/mailServer/Vaildator/Validator.java b/src/main/java/com/example/mailServer/Proxy/Proxy.java
+rename from src/main/java/com/example/mailServer/Vaildator/Validator.java
+rename to src/main/java/com/example/mailServer/Proxy/Proxy.java
+--- a/src/main/java/com/example/mailServer/Vaildator/Validator.java	(revision 6a52057892bcf3f1863f580bbb4f950c49101952)
++++ b/src/main/java/com/example/mailServer/Proxy/Proxy.java	(revision 12396ceb8c44e8e1a5cc4fa800c05818a33b5102)
+@@ -1,4 +1,4 @@
+-package com.example.mailServer.Vaildator;
++package com.example.mailServer.Proxy;
+ 
+ import com.example.mailServer.Modules.Mail;
+ import com.fasterxml.jackson.core.type.TypeReference;
+@@ -10,7 +10,7 @@
+ import java.io.IOException;
+ import java.util.Map;
+ 
+-public class Validator {
++public class Proxy {
+     public Mail m=new Mail();
+     public String check_user_signup(String email2, String password, Map<String,String> users, File myObj) throws ParseException, IOException {
+         System.out.println(email2);
+Index: src/main/java/com/example/mailServer/Services/MailServices.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/example/mailServer/Services/MailServices.java b/src/main/java/com/example/mailServer/Services/MailServices.java
+deleted file mode 100644
+--- a/src/main/java/com/example/mailServer/Services/MailServices.java	(revision 6a52057892bcf3f1863f580bbb4f950c49101952)
++++ /dev/null	(revision 6a52057892bcf3f1863f580bbb4f950c49101952)
+@@ -1,5 +0,0 @@
+-package com.example.mailServer.Services;
+-
+-public class MailServices {
+-
+-}
+Index: src/main/java/com/example/mailServer/Services/Service.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/example/mailServer/Services/Service.java b/src/main/java/com/example/mailServer/Services/Service.java
+--- a/src/main/java/com/example/mailServer/Services/Service.java	(revision 6a52057892bcf3f1863f580bbb4f950c49101952)
++++ b/src/main/java/com/example/mailServer/Services/Service.java	(revision 12396ceb8c44e8e1a5cc4fa800c05818a33b5102)
+@@ -1,12 +1,13 @@
+ package com.example.mailServer.Services;
+ 
++import com.example.mailServer.Adapter.MapAdapter;
+ import com.fasterxml.jackson.core.exc.StreamReadException;
+ import com.fasterxml.jackson.databind.DatabindException;
+-import com.fasterxml.jackson.databind.ObjectMapper;
+ import org.json.simple.JSONArray;
+ import org.json.simple.parser.JSONParser;
+ import org.json.simple.parser.ParseException;
+ 
++import java.io.File;
+ import java.io.FileReader;
+ import java.io.FileWriter;
+ import java.io.IOException;
+@@ -48,18 +49,19 @@
+     }
+     public Map<String, Integer> getfiles(String foldername) throws IOException {
+         Path folderPath = Paths.get(foldername);
+-        Map<String, Integer> files = new HashMap<>();
++        HashMap<String, Integer> files = new HashMap<>();
+         try (Stream<Path> paths = Files.walk(folderPath)) {
+             paths.filter(Files::isRegularFile)
+                     .filter(path -> path.toString().endsWith(".json"))
+                     .forEach(path -> {
+                         try {
+                             if(path.toString().contains("contact")){
+-                                ObjectMapper mapper = new ObjectMapper();
+-                                Map<String,String[]>m=mapper.readValue(new java.io.File(path.toString()), Map.class);
+-                                files.put(String.valueOf(path.getFileName()),m.size());
++                                File file = new File(path.toString());
++                                MapAdapter mapAdapter=new MapAdapter();
++                                HashMap<String,String[]>m=mapAdapter.getSMap(file);
++                                files.put(path.getFileName().toString().replaceFirst("[.][^.]+$", ""),m.size());
+                             }
+-                            else files.put(String.valueOf(path.getFileName()), (int) load_mails(path.toString()).size());
++                            else files.put(path.getFileName().toString().replaceFirst("[.][^.]+$", ""), (int) load_mails(path.toString()).size());
+                         } catch (ParseException e) {
+                             throw new RuntimeException(e);
+                         } catch (StreamReadException e) {
+Index: src/main/java/com/example/mailServer/control/Control.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/example/mailServer/control/Control.java b/src/main/java/com/example/mailServer/control/Control.java
+--- a/src/main/java/com/example/mailServer/control/Control.java	(revision 6a52057892bcf3f1863f580bbb4f950c49101952)
++++ b/src/main/java/com/example/mailServer/control/Control.java	(revision 12396ceb8c44e8e1a5cc4fa800c05818a33b5102)
+@@ -1,15 +1,18 @@
+ package com.example.mailServer.control;
+ 
++import com.example.mailServer.Adapter.MapAdapter;
+ import com.example.mailServer.ContactFilter.ContactFilter;
+-import com.example.mailServer.Date.Day30;
++import com.example.mailServer.DateComp.Day30;
+ import com.example.mailServer.EmailsFilter.Sort;
++import com.example.mailServer.Iterator.ArrayIterator;
++import com.example.mailServer.Iterator.JsonArrayIterator;
+ import com.example.mailServer.Singlton.FileSinglton;
+ import com.example.mailServer.EmailsFilter.EmailFilter;
+ import com.example.mailServer.Builder.FileBuilder;
+ import com.example.mailServer.Modules.Mail;
+ import com.example.mailServer.Services.Service;
+ import com.example.mailServer.Modules.result;
+-import com.example.mailServer.Vaildator.Validator;
++import com.example.mailServer.Proxy.Proxy;
+ import com.fasterxml.jackson.core.type.TypeReference;
+ import com.fasterxml.jackson.databind.ObjectMapper;
+ import org.json.JSONObject;
+@@ -18,7 +21,6 @@
+ import org.json.simple.parser.ParseException;
+ import org.springframework.util.StringUtils;
+ import org.springframework.web.multipart.MultipartFile;
+-
+ import java.io.File;
+ import java.io.FileReader;
+ import java.io.FileWriter;
+@@ -29,29 +31,27 @@
+ import java.nio.file.StandardCopyOption;
+ import java.util.*;
+ 
+-import static org.junit.Assert.assertEquals;
++
+ 
+ public class Control {
+-    Validator vl=new Validator();
++    Proxy vl=new Proxy();
+     Service sr = new Service();
+ 
+     FileSinglton myfile;
+     public Control(){myfile=FileSinglton.getInstance();}
+     public static Map<String, String> users = new HashMap<>();
+-    public Map<String, String[]> load_contact(String filename) throws IOException{
+-        Map<String, String[]> map=new HashMap<>();
+-        ObjectMapper mapper = new ObjectMapper();
++    public HashMap<String, String[]> load_contact(String filename) throws IOException{
++        HashMap<String, String[]> map=new HashMap<>();
++        MapAdapter ma=new MapAdapter();
+         File file = new File(filename);
+         if(file.length()!=0){
+-            map = mapper.readValue(file, new TypeReference<Map<String, String[]>>() {
+-            });
++            map = ma.getSMap(file);
+             return map;
+         }
+         else return map;
+     }
+     public JSONArray load_file(String email,String filename) throws Exception {
+         String path=myfile.getDir_path()+File.separator+sr.get_name(email)+File.separator+filename+".json";
+-        System.out.println(filename);
+         if(filename.equalsIgnoreCase("trash")){
+             try{
+                 System.out.println("in trash");
+@@ -90,7 +90,7 @@
+             array.add(jsonObject);}
+         sr.save_mails(path,array);
+     }
+-    
++
+     public String signin(String email, String password) throws Exception {
+         return vl.check_user(email,password,users,myfile.getMyObj());
+     }
+@@ -110,9 +110,6 @@
+                     users = mapper.readValue(myfile.getMyObj(), new TypeReference<Map<String, String>>() {
+                     });
+                     users.put(email, password);
+-                    for (Map.Entry<String, String> entry : users.entrySet())
+-                        System.out.println("Key = " + entry.getKey() +
+-                                ", Value = " + entry.getValue());
+                     JSONObject jsonObj = new JSONObject(users);
+ //                    System.out.println(jsonObj + "hena");
+                     FileWriter myWriter = new FileWriter(myfile.getPath());
+@@ -125,9 +122,6 @@
+                 System.out.println("else");
+                 result = "not found";
+                 users.put(email, password);
+-                for (Map.Entry<String, String> entry : users.entrySet())
+-                    System.out.println("Key = " + entry.getKey() +
+-                            ", Value = " + entry.getValue());
+                 JSONObject jsonObj = new JSONObject(users);
+                 FileWriter myWriter = new FileWriter(myfile.getPath());
+                 myWriter.write(jsonObj.toString());
+@@ -186,7 +180,7 @@
+         ArrayList array1=sort.sort(array,feature);
+         JSONArray array2=new JSONArray();
+         array2.addAll(array1);
+-        System.out.println(array2);
++
+         return array2;
+     }
+     public result delete_mail(String filename, String email, Mail[] index) throws Exception {
+@@ -196,12 +190,21 @@
+             trashed(email,index);
+         }
+         try {
+-            for (int j = 0; j < index.length; j++) {
+-                JSONObject json = new JSONObject(index[j]);
+-                for (int i = 0; i < array.size(); i++) {
+-                    if (array.get(i).toString().equals(json.toString())) {
+-                        array.remove(i);
+-                        break;}}}
++            ArrayIterator<Mail> iterator=new ArrayIterator<>(index);
++
++            while (iterator.hasNext())
++            {   JSONObject json = new JSONObject(iterator.next());
++                JsonArrayIterator<Object>iterator1=new JsonArrayIterator<>(array);
++                while ((iterator1.hasNext()))
++                {   Object obj=iterator1.next();
++                    if (obj.toString().equals(json.toString())) {
++                        array.remove(iterator1.getIndex());
++                        break;}
++                    iterator1.increment();
++                }
++                iterator.increment();
++
++            }
+             sr.save_mails(path1, array);
+             return new result("deleted", true);
+         }
+@@ -231,39 +234,48 @@
+         try {
+             JSONArray array1 = sr.load_mails(path1);
+             JSONArray array2 = sr.load_mails(path2);
+-            for (int j = 0; j < index.length; j++) {
+-                JSONObject json = new JSONObject(index[j]);
+-                for (int i = 0; i < array1.size(); i++) {
+-                    if (array1.get(i).toString().equals(json.toString())) {
+-                        array2.add(array1.get(i));
+-                        array1.remove(i);
+-                        break;
+-                    }
+-                }
+-            }
++            ArrayIterator<Mail> iterator=new ArrayIterator<>(index);
++            while (iterator.hasNext())
++            {   JSONObject json = new JSONObject(iterator.next());
++                JsonArrayIterator<Object>iterator1=new JsonArrayIterator<>(array1);
++                while ((iterator1.hasNext()))
++                {    Object obj=iterator1.next();
++                    if (obj.toString().equals(json.toString())) {
++                        array2.add(obj);
++                        array1.remove(iterator1.getIndex());
++                        break;}
++                    iterator1.increment();;}
++                iterator.increment();}
+             sr.save_mails(path1, array1);
+             sr.save_mails(path2, array2);
+-            return "moved";
+-        }
++            return "moved";}
+         catch(Exception e){
+-            return "error";
+-        }
++            return "error";}
+     }
+-    public String move_all(String email,String filename1, String filename2) throws Exception {
+-        String path1=myfile.getDir_path()+"\\"+sr.get_name(email)+"\\"+filename1+".json";
+-        String path2=myfile.getDir_path()+"\\"+sr.get_name(email)+"\\"+filename2+".json";
+-        JSONArray array1=sr.load_mails(path1);
+-        JSONArray array2=sr.load_mails(path2);
+-        for(int i=0;i<array1.size();i++)
+-        {
+-            System.out.println(array1.get(i));
+-            array2.add(array1.get(i));
+-            array1.remove(i);
+-        }
+-        sr.save_mails(path1,array1);
+-        sr.save_mails(path2,array2);
+-        return "done";
+-    }
++    //    public String move_all(String email,String filename1, String filename2) throws Exception {
++//        String path1=myfile.getDir_path()+"\\"+sr.get_name(email)+"\\"+filename1+".json";
++//        String path2=myfile.getDir_path()+"\\"+sr.get_name(email)+"\\"+filename2+".json";
++//        JSONArray array1=sr.load_mails(path1);
++//        JSONArray array2=sr.load_mails(path2);
++//
++////        for(int i=0;i<array1.size();i++)
++////        {
++////            System.out.println(array1.get(i));
++////            array2.add(array1.get(i));
++////            array1.remove(i);
++////        }
++//        JsonArrayIterator<Object>iterator1=new JsonArrayIterator<>(array1);
++//        while (iterator1.hasNext())
++//        { Object obj=iterator1.next();
++//
++//            array2.add(obj);
++////            iterator1.remove(obj);
++//
++//        }
++//        sr.save_mails(path1,array1);
++//        sr.save_mails(path2,array2);
++//        return "done";
++//    }
+     public String addfolder(String mail, String filename) throws Exception {
+         String path=myfile.getDir_path()+"\\"+sr.get_name(mail)+"\\"+filename+".json";
+         File file = new File(path);
+@@ -342,14 +354,12 @@
+         String path=myfile.getDir_path()+"\\"+sr.get_name(mail)+"\\"+"draft.json";
+         JSONArray array=sr.load_mails(path);
+         JSONObject json=new JSONObject(index);
+-        array.add(json);
+         sr.save_mails(path,array);
+         return "done";
+     }
+     public Path getfiles(String fileName,String from2) throws Exception {
+         String from=sr.get_name(from2);
+         Path res = Paths.get(myfile.getDir_path()+"\\"+from).toAbsolutePath().normalize().resolve(fileName) ;
+-        System.out.println(res);
+         if(Files.exists(res)){
+             System.out.println("will send");
+             return res ;
+@@ -368,8 +378,8 @@
+                 Path copyLocation = Paths.get(myfile.getDir_path() +File.separator+filename1 +File.separator + StringUtils.cleanPath(attachment.getOriginalFilename()));
+                 Files.copy(attachment.getInputStream(),copyLocation, StandardCopyOption.REPLACE_EXISTING);
+                 try{
+-                Path copyLocation1 = Paths.get(myfile.getDir_path() +File.separator+filename2 +File.separator + StringUtils.cleanPath(attachment.getOriginalFilename()));
+-                Files.copy(attachment.getInputStream(),copyLocation1, StandardCopyOption.REPLACE_EXISTING);}
++                    Path copyLocation1 = Paths.get(myfile.getDir_path() +File.separator+filename2 +File.separator + StringUtils.cleanPath(attachment.getOriginalFilename()));
++                    Files.copy(attachment.getInputStream(),copyLocation1, StandardCopyOption.REPLACE_EXISTING);}
+                 catch (Exception e)
+                 {
+                     System.out.println("File already exists");
+Index: src/main/java/com/example/mailServer/control/Requests.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/example/mailServer/control/Requests.java b/src/main/java/com/example/mailServer/control/Requests.java
+--- a/src/main/java/com/example/mailServer/control/Requests.java	(revision 6a52057892bcf3f1863f580bbb4f950c49101952)
++++ b/src/main/java/com/example/mailServer/control/Requests.java	(revision 12396ceb8c44e8e1a5cc4fa800c05818a33b5102)
+@@ -34,7 +34,7 @@
+     @RequestMapping( value = "/mailing",method = RequestMethod.POST)
+     @ResponseBody
+     public result mailing(@RequestBody Mail mail) throws Exception {
+-       return controll.save_mail(mail);
++        return controll.save_mail(mail);
+     }
+     @RequestMapping(value="/adddraft/{email}",method = RequestMethod.POST)
+     @ResponseBody
+@@ -50,25 +50,21 @@
+     public JSONArray filter(@PathVariable String email,@PathVariable String filename,@PathVariable String feature,@PathVariable String target ) throws Exception {
+         String path=controll.myfile.getDir_path()+File.separator+controll.sr.get_name(email)+File.separator+filename+".json";
+         JSONArray json1=controll.filter(feature,target,path);
+-        System.out.println(json1);
+         return json1;
+     }
+     @RequestMapping(value ="/sort/{email}/{filename}/{feature}",method = RequestMethod.GET)
+     @ResponseBody
+     public JSONArray sort(@PathVariable String email,@PathVariable String filename,@PathVariable String feature) throws Exception {
+         JSONArray array=controll.sort(email,feature,filename);
+-        JSONArray arr=new JSONArray();
+         return array;
+     }
+-   @RequestMapping(value = "/addfolder/{mail}/{name}", method = RequestMethod.GET)
++    @RequestMapping(value = "/addfolder/{mail}/{name}", method = RequestMethod.GET)
+     public String addfolder(@PathVariable String mail,@PathVariable String name) throws Exception {
+-       System.out.println(mail);
+-         System.out.println(name);
+         return controll.addfolder(mail,name);
+     }
+-    @RequestMapping(value = "/moveall/{mail}/{name}/{name1}", method = RequestMethod.GET)
+-    public String moveall(@PathVariable String mail,@PathVariable String name,@PathVariable String name1) throws Exception {
+-        return controll.move_all(mail,name,name1);}
++    //    @RequestMapping(value = "/moveall/{mail}/{name}/{name1}", method = RequestMethod.GET)
++//    public String moveall(@PathVariable String mail,@PathVariable String name,@PathVariable String name1) throws Exception {
++//        return controll.move_all(mail,name,name1);}
+     @RequestMapping(value = "/deletemail/{email}/{filename}", method = RequestMethod.DELETE)
+     public result deletemail(@RequestBody Mail[] mail,@PathVariable String email,@PathVariable String filename) throws Exception {
+         return controll.delete_mail(filename,email,mail);}
+@@ -127,12 +123,12 @@
+     }
+     @PostMapping("/attachments/{to}/{from}")
+     public ArrayList<String> handleattachmnets(@RequestParam("attachment") MultipartFile [] attachments, @PathVariable  String to, @PathVariable String from) throws Exception {
+-        ArrayList<String> names= controll.handleattachmnets1(attachments,to,from);
+-        return names;
++        return controll.handleattachmnets1(attachments,to,from);
+     }
+     @RequestMapping(value="/filesreload/{email}",method = RequestMethod.GET)
+     public Map<String, Integer> relod(@PathVariable String email) throws Exception {
+         return controll.reload(email);
+     }
+ 
++
+ }

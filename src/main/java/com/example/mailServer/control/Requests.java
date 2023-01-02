@@ -1,4 +1,5 @@
 package com.example.mailServer.control;
+
 import com.example.mailServer.Modules.Mail;
 import com.example.mailServer.Modules.result;
 import org.json.simple.JSONArray;
@@ -7,12 +8,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.io.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Map;
-import org.springframework.web.multipart.MultipartFile;
 
 @CrossOrigin
 @RestController
@@ -52,10 +54,10 @@ public class Requests {
         JSONArray json1=controll.filter(feature,target,path);
         return json1;
     }
-    @RequestMapping(value ="/sort/{email}/{filename}/{feature}",method = RequestMethod.GET)
+    @RequestMapping(value ="/sort/{email}/{filename}/{feature}/{value}",method = RequestMethod.GET)
     @ResponseBody
-    public JSONArray sort(@PathVariable String email,@PathVariable String filename,@PathVariable String feature) throws Exception {
-        JSONArray array=controll.sort(email,feature,filename);
+    public JSONArray sort(@PathVariable String email,@PathVariable String filename,@PathVariable String feature,@PathVariable boolean value) throws Exception {
+        JSONArray array=controll.sort(email,feature,filename,value);
         return array;
     }
     @RequestMapping(value = "/addfolder/{mail}/{name}", method = RequestMethod.GET)
