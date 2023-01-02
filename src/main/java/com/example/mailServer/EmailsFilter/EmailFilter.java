@@ -1,7 +1,7 @@
 package com.example.mailServer.EmailsFilter;
 
+import com.example.mailServer.Adapter.ArrayAdapter;
 import com.example.mailServer.Modules.Mail;
-import com.google.gson.Gson;
 import org.json.simple.JSONArray;
 
 import java.util.ArrayList;
@@ -38,13 +38,9 @@ public class EmailFilter implements Filter {
 
     @Override
     public ArrayList<Mail> meetCriteria(JSONArray emails) {
+        ArrayAdapter arrayAdapter = new ArrayAdapter();
         ArrayList<Mail> filteredEmails = new ArrayList<>();
-        ArrayList<Mail> emailsList = new ArrayList<>();
-        for (int i=0;i<emails.size();i++){
-            Gson gson = new Gson();
-            Mail mail = gson.fromJson(emails.get(i).toString(), Mail.class);
-            emailsList.add(mail);
-        }
+        ArrayList<Mail> emailsList =arrayAdapter.getMyarray(emails);
         switch (this.feature.toLowerCase()){
             case "subject":
                 emailsList.stream().filter(email -> email.getSubject().toLowerCase().contains(this.target.toLowerCase())).forEach(filteredEmails::add);
@@ -63,6 +59,9 @@ public class EmailFilter implements Filter {
                 break;
             case "attachment":
                 emailsList.stream().filter(email -> Arrays.stream(email.getAttachment()).filter(attachment -> attachment.toLowerCase().contains(this.target.toLowerCase())).count() > 0).forEach(filteredEmails::add);
+                break;
+            case "date":
+                emailsList.stream().filter(email -> email.getDate().toLowerCase().contains(this.target.toLowerCase())).forEach(filteredEmails::add);
                 break;
 
         }

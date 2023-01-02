@@ -1,4 +1,4 @@
-package com.example.mailServer.Vaildator;
+package com.example.mailServer.Proxy;
 
 import com.example.mailServer.Modules.Mail;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -10,7 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
-public class Validator {
+public class Proxy {
     public Mail m=new Mail();
     public String check_user_signup(String email2, String password, Map<String,String> users, File myObj) throws ParseException, IOException {
         System.out.println(email2);

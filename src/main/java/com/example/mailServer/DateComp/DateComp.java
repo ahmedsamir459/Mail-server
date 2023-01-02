@@ -1,5 +1,6 @@
-package com.example.mailServer.Date;
+package com.example.mailServer.DateComp;
 
+import com.example.mailServer.Adapter.DateAdapter;
 import com.example.mailServer.Modules.Mail;
 
 import java.time.LocalDateTime;

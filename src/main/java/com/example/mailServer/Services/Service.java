@@ -1,12 +1,13 @@
 package com.example.mailServer.Services;
 
+import com.example.mailServer.Adapter.MapAdapter;
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -48,18 +49,19 @@ public class Service {
     }
     public Map<String, Integer> getfiles(String foldername) throws IOException {
         Path folderPath = Paths.get(foldername);
-        Map<String, Integer> files = new HashMap<>();
+        HashMap<String, Integer> files = new HashMap<>();
         try (Stream<Path> paths = Files.walk(folderPath)) {
             paths.filter(Files::isRegularFile)
                     .filter(path -> path.toString().endsWith(".json"))
                     .forEach(path -> {
                         try {
                             if(path.toString().contains("contact")){
-                                ObjectMapper mapper = new ObjectMapper();
-                                Map<String,String[]>m=mapper.readValue(new java.io.File(path.toString()), Map.class);
-                                files.put(String.valueOf(path.getFileName()),m.size());
+                                File file = new File(path.toString());
+                                MapAdapter mapAdapter=new MapAdapter();
+                                HashMap<String,String[]>m=mapAdapter.getSMap(file);
+                                files.put(path.getFileName().toString().replaceFirst("[.][^.]+$", ""),m.size());
                             }
-                            else files.put(String.valueOf(path.getFileName()), (int) load_mails(path.toString()).size());
+                            else files.put(path.getFileName().toString().replaceFirst("[.][^.]+$", ""), (int) load_mails(path.toString()).size());
                         } catch (ParseException e) {
                             throw new RuntimeException(e);
                         } catch (StreamReadException e) {

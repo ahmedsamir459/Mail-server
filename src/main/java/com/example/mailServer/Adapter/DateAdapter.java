@@ -1,4 +1,4 @@
-package com.example.mailServer.Date;
+package com.example.mailServer.Adapter;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
