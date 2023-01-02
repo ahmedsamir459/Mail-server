@@ -1,5 +1,8 @@
 package com.example.mailServer.Services;
 
+import com.fasterxml.jackson.core.exc.StreamReadException;
+import com.fasterxml.jackson.databind.DatabindException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -32,7 +35,6 @@ public class Service {
         }
         size=(int)myObj.length();
     }
-
     public void CreateFolder(String path){
             java.io.File f = new java.io.File(path);
         if (f.mkdir()) {
@@ -48,12 +50,28 @@ public class Service {
         Path folderPath = Paths.get(foldername);
         Map<String, Integer> files = new HashMap<>();
         try (Stream<Path> paths = Files.walk(folderPath)) {
-            // Filter the Stream to only include files with the .txt extension
             paths.filter(Files::isRegularFile)
                     .filter(path -> path.toString().endsWith(".json"))
-                    .forEach(path -> files.put(String.valueOf(path.getFileName()), (int) path.toFile().length()));
+                    .forEach(path -> {
+                        try {
+                            if(path.toString().contains("contact")){
+                                ObjectMapper mapper = new ObjectMapper();
+                                Map<String,String[]>m=mapper.readValue(new java.io.File(path.toString()), Map.class);
+                                files.put(String.valueOf(path.getFileName()),m.size());
+                            }
+                            else files.put(String.valueOf(path.getFileName()), (int) load_mails(path.toString()).size());
+                        } catch (ParseException e) {
+                            throw new RuntimeException(e);
+                        } catch (StreamReadException e) {
+                            throw new RuntimeException(e);
+                        } catch (DatabindException e) {
+                            throw new RuntimeException(e);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
         }
-        return null;
+        return files;
     }
     public String get_name(String email) throws Exception {
         String filename = "";
@@ -77,5 +95,6 @@ public class Service {
         myWriter.write(array.toString());
         myWriter.close();
     }
+
 }
 

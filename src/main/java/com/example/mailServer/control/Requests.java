@@ -1,21 +1,17 @@
 package com.example.mailServer.control;
 import com.example.mailServer.Modules.Mail;
 import com.example.mailServer.Modules.result;
-
-import com.example.mailServer.Services.Service;
 import org.json.simple.JSONArray;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Map;
-
 import org.springframework.web.multipart.MultipartFile;
 
 @CrossOrigin
@@ -62,9 +58,6 @@ public class Requests {
     public JSONArray sort(@PathVariable String email,@PathVariable String filename,@PathVariable String feature) throws Exception {
         JSONArray array=controll.sort(email,feature,filename);
         JSONArray arr=new JSONArray();
-//        arr=controll.sort(email,feature,filename);
-        System.out.println(arr);
-        System.out.println(array);
         return array;
     }
    @RequestMapping(value = "/addfolder/{mail}/{name}", method = RequestMethod.GET)
@@ -75,26 +68,21 @@ public class Requests {
     }
     @RequestMapping(value = "/moveall/{mail}/{name}/{name1}", method = RequestMethod.GET)
     public String moveall(@PathVariable String mail,@PathVariable String name,@PathVariable String name1) throws Exception {
-        return controll.move_all(mail,name,name1);
-    }
+        return controll.move_all(mail,name,name1);}
     @RequestMapping(value = "/deletemail/{email}/{filename}", method = RequestMethod.DELETE)
     public result deletemail(@RequestBody Mail[] mail,@PathVariable String email,@PathVariable String filename) throws Exception {
-        return controll.delete_mail(filename,email,mail);
-    }
+        return controll.delete_mail(filename,email,mail);}
     @RequestMapping(value = "/deleteall/{email}/{filename}", method = RequestMethod.DELETE)
     public result deleteall(@PathVariable String email,@PathVariable String filename) throws Exception {;
-        return controll.delete_all(filename,email);
-    }
+        return controll.delete_all(filename,email);}
     @RequestMapping(value = "/moveemail/{email}/{filename}/{filename1}", method = RequestMethod.POST)
     public String moveemail(@RequestBody Mail[] mail,@PathVariable String email,@PathVariable String filename,@PathVariable String filename1) throws Exception {;
         return controll.move_mail(filename,filename1,email,mail);
     }
-
     @RequestMapping(value = "/addcontact/{mail}/{name}", method = RequestMethod.POST)
     public  String addcontact(@PathVariable String mail,@PathVariable String name, @RequestBody String[] mail2) throws Exception {
         return controll.addcontact(mail,name,mail2);
     }
-
     @RequestMapping(value = "/renamecontact/{mail}/{name}/{name2}", method = RequestMethod.GET)
     public  String renamecontact(@PathVariable String mail,@PathVariable String name, @PathVariable String name2) throws Exception {
         return controll.rename_contact(mail,name,name2);
@@ -142,12 +130,9 @@ public class Requests {
         ArrayList<String> names= controll.handleattachmnets1(attachments,to,from);
         return names;
     }
-    @RequestMapping(value="/reload/{email}}",method = RequestMethod.GET)
-    public Map<String, Integer> reload(@PathVariable String email) throws Exception {
+    @RequestMapping(value="/filesreload/{email}",method = RequestMethod.GET)
+    public Map<String, Integer> relod(@PathVariable String email) throws Exception {
         return controll.reload(email);
     }
-
-
-
 
 }
