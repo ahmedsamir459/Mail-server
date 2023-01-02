@@ -3,7 +3,6 @@ import com.example.mailServer.Modules.result;
 import com.example.mailServer.control.Controll;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import static org.junit.Assert.*;
 @SpringBootTest
 public class FolderTest {

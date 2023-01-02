@@ -12,6 +12,14 @@ public class Mail {
    private String from;
    private String  to;
    private String subject;
+
+   public Mail(String from, String to, String subject, String body) {
+      this.from = from;
+      this.to = to;
+      this.subject = subject;
+      this.body = body;
+   }
+
    private String body;
    private int priority;
 

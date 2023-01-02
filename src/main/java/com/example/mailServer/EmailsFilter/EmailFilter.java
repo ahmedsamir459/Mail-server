@@ -46,16 +46,16 @@ public class EmailFilter implements Filter {
         }
         switch (this.feature.toLowerCase()){
             case "subject":
-                emailsList.stream().filter(email -> email.getSubject().equalsIgnoreCase(this.target)).forEach(filteredEmails::add);
+                emailsList.stream().filter(email -> email.getSubject().toLowerCase().contains(this.target.toLowerCase())).forEach(filteredEmails::add);
                 break;
             case "from":
-                emailsList.stream().filter(email -> email.getFrom().equalsIgnoreCase(this.target)).forEach(filteredEmails::add);
+                emailsList.stream().filter(email -> email.getFrom().toLowerCase().contains(this.target.toLowerCase())).forEach(filteredEmails::add);
                 break;
             case "to":
-                emailsList.stream().filter(email -> email.getTo().equalsIgnoreCase(this.target)).forEach(filteredEmails::add);
+                emailsList.stream().filter(email -> email.getTo().toLowerCase().contains(this.target.toLowerCase())).forEach(filteredEmails::add);
                 break;
             case "body":
-                emailsList.stream().filter(email -> email.getBody().equalsIgnoreCase(this.target)).forEach(filteredEmails::add);
+                emailsList.stream().filter(email -> email.getBody().toLowerCase().contains(this.target.toLowerCase())).forEach(filteredEmails::add);
                 break;
             case "priority":
                 emailsList.stream().filter(email ->String.valueOf(email.getPriority()).equalsIgnoreCase(this.target)).forEach(filteredEmails::add);

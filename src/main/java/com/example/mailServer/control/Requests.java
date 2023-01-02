@@ -4,18 +4,14 @@ import com.example.mailServer.Modules.result;
 
 import org.json.simple.JSONArray;
 import org.springframework.core.io.UrlResource;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -43,17 +39,33 @@ public class Requests {
     public result mailing(@RequestBody Mail mail) throws Exception {
        return controll.save_mail(mail);
     }
+    @RequestMapping(value="/adddraft/{email}",method = RequestMethod.POST)
+    @ResponseBody
+    public String adddraft(@RequestBody Mail mail, @PathVariable String email) throws Exception {
+        return controll.adddraft(email,mail);
+    }
     @RequestMapping(value = "/load/{email}/{fileName}",method = RequestMethod.GET)
     public JSONArray load_mail(@PathVariable String email,@PathVariable String fileName) throws Exception {
         String path=controll.myfile.getDir_path()+File.separator+controll.get_name(email)+File.separator+fileName+".json";
         return controll.load_mails(path);
     }
-    @RequestMapping( value = "/filter/{email}/{filename}/{feature}/{target}",method = RequestMethod.POST)
+    @RequestMapping( value = "/filter/{email}/{filename}/{feature}/{target}",method = RequestMethod.GET)
     @ResponseBody
     public JSONArray filter(@PathVariable String email,@PathVariable String filename,@PathVariable String feature,@PathVariable String target ) throws Exception {
         String path=controll.myfile.getDir_path()+File.separator+controll.get_name(email)+File.separator+filename+".json";
         JSONArray json1=controll.filter(feature,target,path);
+        System.out.println(json1);
         return json1;
+    }
+    @RequestMapping(value ="/sort/{email}/{filename}/{feature}",method = RequestMethod.GET)
+    @ResponseBody
+    public JSONArray sort(@PathVariable String email,@PathVariable String filename,@PathVariable String feature) throws Exception {
+        JSONArray array=controll.sort(email,feature,filename);
+        JSONArray arr=new JSONArray();
+//        arr=controll.sort(email,feature,filename);
+        System.out.println(arr);
+        System.out.println(array);
+        return array;
     }
    @RequestMapping(value = "/addfolder/{mail}/{name}", method = RequestMethod.GET)
     public String addfolder(@PathVariable String mail,@PathVariable String name) throws Exception {
@@ -66,7 +78,7 @@ public class Requests {
         return controll.move_all(mail,name,name1);
     }
     @RequestMapping(value = "/deletemail/{email}/{filename}", method = RequestMethod.DELETE)
-    public result deletemail(@RequestBody Mail mail,@PathVariable String email,@PathVariable String filename) throws Exception {
+    public result deletemail(@RequestBody Mail[] mail,@PathVariable String email,@PathVariable String filename) throws Exception {
         return controll.delete_mail(filename,email,mail);
     }
     @RequestMapping(value = "/deleteall/{email}/{filename}", method = RequestMethod.DELETE)
@@ -74,7 +86,7 @@ public class Requests {
         return controll.delete_all(filename,email);
     }
     @RequestMapping(value = "/moveemail/{email}/{filename}/{filename1}", method = RequestMethod.POST)
-    public String moveemail(@RequestBody Mail mail,@PathVariable String email,@PathVariable String filename,@PathVariable String filename1) throws Exception {;
+    public String moveemail(@RequestBody Mail[] mail,@PathVariable String email,@PathVariable String filename,@PathVariable String filename1) throws Exception {;
         return controll.move_mail(filename,filename1,email,mail);
     }
 
@@ -83,7 +95,7 @@ public class Requests {
         return controll.addcontact(mail,name,mail2);
     }
 
-    @RequestMapping(value = "/renamecontact/{mail}/{name}/{name2}", method = RequestMethod.POST)
+    @RequestMapping(value = "/renamecontact/{mail}/{name}/{name2}", method = RequestMethod.GET)
     public  String renamecontact(@PathVariable String mail,@PathVariable String name, @PathVariable String name2) throws Exception {
         return controll.rename_contact(mail,name,name2);
     }
@@ -101,6 +113,11 @@ public class Requests {
     public  result deletefolder(@PathVariable String mail, @PathVariable String name) throws Exception {
         return controll.deletefolder(mail,name);
     }
+    @RequestMapping(value="/filtercontact/{email}/{target}",method = RequestMethod.GET)
+    public Map<String, String[]> filtercontact(@PathVariable String email,@PathVariable String target) throws Exception {
+        return controll.filtercontact(email,target);
+    }
+
     @RequestMapping(value = "/renamefolder/{mail}/{name}/{name1}", method = RequestMethod.GET)
     public  String renamefolder(@PathVariable String mail, @PathVariable String name,@PathVariable String name1) throws Exception {
         return controll.renamefolder(mail,name,name1);
