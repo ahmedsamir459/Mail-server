@@ -1,13 +1,10 @@
 package com.example.mailServer.Datecomp;
 
-import com.example.mailServer.Mail;
+import com.example.mailServer.Modules.Mail;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
-import java.util.Date;
 
 public class DateComp implements Comparator<Mail> {
     @Override

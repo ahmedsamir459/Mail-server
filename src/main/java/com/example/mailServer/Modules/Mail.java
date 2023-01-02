@@ -1,4 +1,4 @@
-package com.example.mailServer;
+package com.example.mailServer.Modules;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;

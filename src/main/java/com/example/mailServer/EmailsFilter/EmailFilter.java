@@ -1,6 +1,6 @@
 package com.example.mailServer.EmailsFilter;
 
-import com.example.mailServer.Mail;
+import com.example.mailServer.Modules.Mail;
 import com.google.gson.Gson;
 import org.json.simple.JSONArray;
 

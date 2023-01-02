@@ -1,5 +1,5 @@
 package com.example.mailServer.Datecomp;
-import com.example.mailServer.Mail;
+import com.example.mailServer.Modules.Mail;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONArray;
 import java.time.LocalDateTime;

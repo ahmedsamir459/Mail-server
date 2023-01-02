@@ -1,5 +1,6 @@
-package com.example.mailServer;
+package com.example.mailServer.Vaildator;
 
+import com.example.mailServer.Modules.Mail;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
@@ -7,7 +8,6 @@ import org.json.simple.parser.ParseException;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 public class Validator {

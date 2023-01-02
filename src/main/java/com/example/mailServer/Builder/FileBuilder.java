@@ -1,6 +1,6 @@
-package com.example.mailServer;
+package com.example.mailServer.Builder;
 
-import com.example.mailServer.Modules.Service;
+import com.example.mailServer.Services.Service;
 
 public class FileBuilder {
 public void BuildFile(String filename,String s)

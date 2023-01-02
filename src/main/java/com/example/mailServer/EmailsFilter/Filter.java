@@ -1,5 +1,5 @@
 package com.example.mailServer.EmailsFilter;
-import com.example.mailServer.Mail;
+import com.example.mailServer.Modules.Mail;
 import org.json.simple.JSONArray;
 
 import java.util.ArrayList;

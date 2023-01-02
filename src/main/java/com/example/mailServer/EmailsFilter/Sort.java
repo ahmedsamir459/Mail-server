@@ -1,7 +1,7 @@
 package com.example.mailServer.EmailsFilter;
 
 import com.example.mailServer.Datecomp.DateComp;
-import com.example.mailServer.Mail;
+import com.example.mailServer.Modules.Mail;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONArray;

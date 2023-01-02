@@ -23,13 +23,13 @@ public class ContactTest {
         when(control.addcontact("ahmed@mail.com", "wael",new String[]{"wael@mail.com"})).thenReturn("Done");
         when(control.addcontact("ahmed@mail.com", "yosef",new String[]{"yosef@mail.com"})).thenReturn("error");
         assertEquals("Done", control.addcontact("ahmed@mail.com", "wael", new String[]{"wael@mail.com"}));
-        assertEquals(null, control.addcontact("ahmed@mail.com", "yosef", new String[]{"yosef@mail.com"}));
+        assertEquals("error", control.addcontact("ahmed@mail.com", "yosef", new String[]{"yosef@mail.com"}));
     }
     @Test
     public void testdeletecontact() throws Exception {
         when(control.deletecontact("ahmed@mail.com","mohamed@mail.com")).thenReturn(new result("Done",false));
         when(control.deletecontact("ahmed@mail.com","elzainy@mail.com")).thenReturn(new result("error",true));
-        assertEquals(new result("Done",false), control.deletecontact("ahmed@mail.com","elzainy@mail.com"));
+        assertEquals(new result("error",false), control.deletecontact("ahmed@mail.com","elzainy@mail.com"));
         assertEquals(new result("error",true), control.deletecontact("ahmed@mail.com", "mohamed@mail.com"));
     }
     @Test

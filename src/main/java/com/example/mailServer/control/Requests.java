@@ -1,7 +1,8 @@
 package com.example.mailServer.control;
-import com.example.mailServer.Mail;
+import com.example.mailServer.Modules.Mail;
 import com.example.mailServer.Modules.result;
 
+import com.example.mailServer.Services.Service;
 import org.json.simple.JSONArray;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -51,7 +52,7 @@ public class Requests {
     @RequestMapping( value = "/filter/{email}/{filename}/{feature}/{target}",method = RequestMethod.GET)
     @ResponseBody
     public JSONArray filter(@PathVariable String email,@PathVariable String filename,@PathVariable String feature,@PathVariable String target ) throws Exception {
-        String path=controll.myfile.getDir_path()+File.separator+controll.get_name(email)+File.separator+filename+".json";
+        String path=controll.myfile.getDir_path()+File.separator+controll.sr.get_name(email)+File.separator+filename+".json";
         JSONArray json1=controll.filter(feature,target,path);
         System.out.println(json1);
         return json1;
@@ -104,7 +105,7 @@ public class Requests {
     }
     @RequestMapping(value = "/loadcontact/{mail}", method = RequestMethod.GET)
     public Map<String, String[]> loadcontact(@PathVariable String mail) throws Exception {
-        String path=controll.myfile.getDir_path()+"\\"+controll.get_name(mail)+"\\"+"contacts.json";
+        String path=controll.myfile.getDir_path()+"\\"+controll.sr.get_name(mail)+"\\"+"contacts.json";
         return controll.load_contact(path);
     }
 
@@ -140,6 +141,10 @@ public class Requests {
     public ArrayList<String> handleattachmnets(@RequestParam("attachment") MultipartFile [] attachments, @PathVariable  String to, @PathVariable String from) throws Exception {
         ArrayList<String> names= controll.handleattachmnets1(attachments,to,from);
         return names;
+    }
+    @RequestMapping(value="/reload/{email}}",method = RequestMethod.GET)
+    public Map<String, Integer> reload(@PathVariable String email) throws Exception {
+        return controll.reload(email);
     }
 
 

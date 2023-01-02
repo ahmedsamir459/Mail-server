@@ -1,4 +1,6 @@
-package com.example.mailServer.Modules;
+package com.example.mailServer.Singlton;
+
+import com.example.mailServer.Services.Service;
 
 public class FileSinglton {
     private static FileSinglton instance = null;

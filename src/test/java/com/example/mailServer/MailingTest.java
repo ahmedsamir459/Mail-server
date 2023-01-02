@@ -1,4 +1,5 @@
 package com.example.mailServer;
+import com.example.mailServer.Modules.Mail;
 import com.example.mailServer.Modules.result;
 import com.example.mailServer.control.Control;
 import org.junit.Test;
