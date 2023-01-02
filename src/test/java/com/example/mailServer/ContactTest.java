@@ -7,13 +7,13 @@ import org.mockito.MockitoAnnotations;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import org.springframework.boot.test.context.SpringBootTest;
-import com.example.mailServer.control.Controll;
+import com.example.mailServer.control.Control;
 
 
 @SpringBootTest
 public class ContactTest {
     @Mock
-    private Controll control;
+    private Control control;
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);

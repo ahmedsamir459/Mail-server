@@ -1,6 +1,7 @@
 package com.example.mailServer.control;
 
 import com.example.mailServer.ContactFilter.ContactFilter;
+import com.example.mailServer.Datecomp.Day30;
 import com.example.mailServer.EmailsFilter.Sort;
 import com.example.mailServer.Modules.FileSinglton;
 import com.example.mailServer.EmailsFilter.EmailFilter;
@@ -9,17 +10,12 @@ import com.example.mailServer.Mail;
 import com.example.mailServer.Modules.Service;
 import com.example.mailServer.Modules.result;
 import com.example.mailServer.Validator;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,23 +27,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
-public class Controll {
-
+public class Control {
     Validator vl=new Validator();
     Service sr = new Service();
     FileSinglton myfile;
-    public Controll(){myfile=FileSinglton.getInstance();}
+    public Control(){myfile=FileSinglton.getInstance();}
     public static Map<String, String> users = new HashMap<>();
-
     public Map<String, String[]> load_contact(String filename) throws IOException{
         Map<String, String[]> map=new HashMap<>();
         ObjectMapper mapper = new ObjectMapper();
@@ -55,6 +44,33 @@ public class Controll {
         map = mapper.readValue(file, new TypeReference<Map<String, String[]>>() {
         });
         return map;
+    }
+    public JSONArray load_file(String email,String filename) throws Exception {
+        String path=myfile.getDir_path()+File.separator+get_name(email)+File.separator+filename+".json";
+        System.out.println(filename);
+        if(filename.equalsIgnoreCase("trash")){
+            try{
+                System.out.println("in trash");
+                JSONParser parser = new JSONParser();
+                Day30 day30=new Day30();
+                org.json.simple.JSONArray array;
+                array = (org.json.simple.JSONArray) parser.parse(new FileReader(path));
+                JSONArray array1=day30.filter30days(array);
+                System.out.println(array1);
+                return day30.filter30days(array);}
+            catch(Exception e){
+                return new JSONArray();
+            }
+        }
+        else{
+            try{
+                JSONParser parser = new JSONParser();
+                org.json.simple.JSONArray array;
+                array = (org.json.simple.JSONArray) parser.parse(new FileReader(path));
+                return array;}
+            catch(Exception e){
+                return new JSONArray();}
+        }
     }
     public void save_contact(String filename,  Map<String,String[]> m) throws IOException {
         FileWriter myWriter = new FileWriter(filename);
@@ -170,7 +186,6 @@ public class Controll {
             return new result("error",false);
         }
     }
-
     public JSONArray filter(String feature, String target, String filename) throws IOException, ParseException {
         JSONArray array=load_mails(filename);
         System.out.println("array"+array);
@@ -190,7 +205,6 @@ public class Controll {
         System.out.println(array2);
         return array2;
     }
-
     public result delete_mail(String filename, String email, Mail[] index) throws Exception {
         String path1=myfile.getDir_path()+"\\"+get_name(email)+"\\"+filename+".json";
         JSONArray array=load_mails(path1);
@@ -290,18 +304,6 @@ public class Controll {
 
         }
     }
-    public Path getfiles(String fileName) {
-
-        Path res = Paths.get("src\\main\\java\\com\\example\\mailServer\\Database\\users\\").toAbsolutePath().normalize().resolve(fileName) ;
-        System.out.println(res);
-        if(Files.exists(res)){
-            System.out.println("will send");
-            return res ;
-        }
-        System.out.println("will NOT send");
-        return null ;
-
-    }
     public String addcontact(String mail, String name,String [] mail2) throws Exception {
         String path=myfile.getDir_path()+"\\"+get_name(mail)+"\\"+"contacts.json";
         sr.create_file(path);
@@ -338,7 +340,6 @@ public class Controll {
         }
         return new result("contact not found",true);
     }
-
     public String renamefolder(String mail, String filename1, String filename2) throws Exception {
         String path1=myfile.getDir_path()+"\\"+get_name(mail)+"\\"+filename1+".json";
         String path2=myfile.getDir_path()+"\\"+get_name(mail)+"\\"+filename2+".json";
@@ -360,32 +361,6 @@ public class Controll {
         array.add(json);
         save_mails(path,array);
         return "done";
-    }
-    public String deletedraft(String mail, Mail index) throws Exception {
-        String path=myfile.getDir_path()+"\\"+get_name(mail)+"\\"+"draft.json";
-        JSONArray array=load_mails(path);
-        for(int i=0;i<array.size();i++)
-        {
-            if(array.get(i).equals(index))
-            {
-                array.remove(i);
-            }
-        }
-        save_mails(path,array);
-        return "done";
-    }
-    public String searchContacts(String user, String searchEqual) throws Exception {
-        String path=myfile.getDir_path()+"\\"+get_name(user)+"\\"+"contacts.json";
-        JSONArray array=load_mails(path);
-        JSONArray array2=new JSONArray();
-        for(int i=0;i<array.size();i++)
-        {
-            if(array.get(i).toString().contains(searchEqual))
-            {
-                array2.add(array.get(i));
-            }
-        }
-        return array2.toString();
     }
     public Path getfiles(String fileName,String from2) throws Exception {
         String from=get_name(from2);

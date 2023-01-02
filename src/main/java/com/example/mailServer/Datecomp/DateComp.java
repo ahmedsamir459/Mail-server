@@ -1,4 +1,4 @@
-package com.example.mailServer.EmailsFilter;
+package com.example.mailServer.Datecomp;
 
 import com.example.mailServer.Mail;
 

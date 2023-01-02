@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import org.json.simple.JSONArray;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class EmailFilter implements Filter {
     private String feature;
@@ -59,6 +60,9 @@ public class EmailFilter implements Filter {
                 break;
             case "priority":
                 emailsList.stream().filter(email ->String.valueOf(email.getPriority()).equalsIgnoreCase(this.target)).forEach(filteredEmails::add);
+                break;
+            case "attachment":
+                emailsList.stream().filter(email -> Arrays.stream(email.getAttachment()).filter(attachment -> attachment.toLowerCase().contains(this.target.toLowerCase())).count() > 0).forEach(filteredEmails::add);
                 break;
 
         }

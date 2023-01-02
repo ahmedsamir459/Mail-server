@@ -21,7 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping
 public class Requests {
-    Controll controll=new Controll();
+    Control controll=new Control();
     @CrossOrigin
     @ResponseBody
     @GetMapping(value = "/signup/{email}/{pass}")
@@ -46,8 +46,7 @@ public class Requests {
     }
     @RequestMapping(value = "/load/{email}/{fileName}",method = RequestMethod.GET)
     public JSONArray load_mail(@PathVariable String email,@PathVariable String fileName) throws Exception {
-        String path=controll.myfile.getDir_path()+File.separator+controll.get_name(email)+File.separator+fileName+".json";
-        return controll.load_mails(path);
+        return controll.load_file(email,fileName);
     }
     @RequestMapping( value = "/filter/{email}/{filename}/{feature}/{target}",method = RequestMethod.GET)
     @ResponseBody
