@@ -3,6 +3,8 @@ package com.example.mailServer.control;
 import com.example.mailServer.ContactFilter.ContactFilter;
 import com.example.mailServer.Date.Day30;
 import com.example.mailServer.EmailsFilter.Sort;
+import com.example.mailServer.Iterator.ArrayIterator;
+import com.example.mailServer.Iterator.JsonArrayIterator;
 import com.example.mailServer.Singlton.FileSinglton;
 import com.example.mailServer.EmailsFilter.EmailFilter;
 import com.example.mailServer.Builder.FileBuilder;
@@ -110,9 +112,6 @@ public class Control {
                     users = mapper.readValue(myfile.getMyObj(), new TypeReference<Map<String, String>>() {
                     });
                     users.put(email, password);
-                    for (Map.Entry<String, String> entry : users.entrySet())
-                        System.out.println("Key = " + entry.getKey() +
-                                ", Value = " + entry.getValue());
                     JSONObject jsonObj = new JSONObject(users);
 //                    System.out.println(jsonObj + "hena");
                     FileWriter myWriter = new FileWriter(myfile.getPath());
@@ -125,9 +124,6 @@ public class Control {
                 System.out.println("else");
                 result = "not found";
                 users.put(email, password);
-                for (Map.Entry<String, String> entry : users.entrySet())
-                    System.out.println("Key = " + entry.getKey() +
-                            ", Value = " + entry.getValue());
                 JSONObject jsonObj = new JSONObject(users);
                 FileWriter myWriter = new FileWriter(myfile.getPath());
                 myWriter.write(jsonObj.toString());
@@ -196,12 +192,26 @@ public class Control {
             trashed(email,index);
         }
         try {
-            for (int j = 0; j < index.length; j++) {
-                JSONObject json = new JSONObject(index[j]);
-                for (int i = 0; i < array.size(); i++) {
-                    if (array.get(i).toString().equals(json.toString())) {
-                        array.remove(i);
-                        break;}}}
+            ArrayIterator<Mail> iterator=new ArrayIterator<>(index);
+            JsonArrayIterator<Object>iterator1=new JsonArrayIterator<>(array);
+//            for (int j = 0; j < index.length; j++) {
+//                JSONObject json = new JSONObject(index[j]);
+//                for (int i = 0; i < array.size(); i++) {
+//                    if (array.get(i).toString().equals(json.toString())) {
+//                        array.remove(i);
+//                        break;}
+//                }
+//            }
+            while (iterator.hasNext())
+            {   JSONObject json = new JSONObject(iterator.next());
+                while ((iterator1.hasNext()))
+                {    Object obj=iterator1.next();
+                    if (obj.toString().equals(json.toString())) {
+                        array.remove(obj);
+                        break;}
+                }
+
+            }
             sr.save_mails(path1, array);
             return new result("deleted", true);
         }
@@ -231,15 +241,29 @@ public class Control {
         try {
             JSONArray array1 = sr.load_mails(path1);
             JSONArray array2 = sr.load_mails(path2);
-            for (int j = 0; j < index.length; j++) {
-                JSONObject json = new JSONObject(index[j]);
-                for (int i = 0; i < array1.size(); i++) {
-                    if (array1.get(i).toString().equals(json.toString())) {
-                        array2.add(array1.get(i));
-                        array1.remove(i);
+//            for (int j = 0; j < index.length; j++) {
+//                JSONObject json = new JSONObject(index[j]);
+//                for (int i = 0; i < array1.size(); i++) {
+//                    if (array1.get(i).toString().equals(json.toString())) {
+//                        array2.add(array1.get(i));
+//                        array1.remove(i);
+//                        break;
+//                    }
+//                }
+//            }
+            ArrayIterator<Mail> iterator=new ArrayIterator<>(index);
+            JsonArrayIterator<Object>iterator1=new JsonArrayIterator<>(array1);
+            while (iterator.hasNext())
+            {   JSONObject json = new JSONObject(iterator.next());
+                while ((iterator1.hasNext()))
+                {    Object obj=iterator1.next();
+                    if (obj.toString().equals(json.toString())) {
+                        array2.add(obj);
+                        iterator1.remove(obj);
                         break;
                     }
                 }
+
             }
             sr.save_mails(path1, array1);
             sr.save_mails(path2, array2);
@@ -253,12 +277,22 @@ public class Control {
         String path1=myfile.getDir_path()+"\\"+sr.get_name(email)+"\\"+filename1+".json";
         String path2=myfile.getDir_path()+"\\"+sr.get_name(email)+"\\"+filename2+".json";
         JSONArray array1=sr.load_mails(path1);
+        System.out.println(array1);
         JSONArray array2=sr.load_mails(path2);
-        for(int i=0;i<array1.size();i++)
-        {
-            System.out.println(array1.get(i));
-            array2.add(array1.get(i));
-            array1.remove(i);
+        System.out.println(array2);
+//        for(int i=0;i<array1.size();i++)
+//        {
+//            System.out.println(array1.get(i));
+//            array2.add(array1.get(i));
+//            array1.remove(i);
+//        }
+        JsonArrayIterator<Object>iterator1=new JsonArrayIterator<>(array1);
+        while (iterator1.hasNext())
+        { Object obj=iterator1.next();
+            System.out.println(obj);
+            array2.add(obj);
+            iterator1.remove(obj);
+
         }
         sr.save_mails(path1,array1);
         sr.save_mails(path2,array2);

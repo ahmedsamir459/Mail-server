@@ -1,4 +1,6 @@
 package com.example.mailServer.ContactFilter;
+import com.example.mailServer.Iterator.MapIterator;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,10 +22,13 @@ public class ContactFilter implements IContactFilter {
     @Override
     public Map<String, String[]> meetCriteria(Map<String, String[]> map) {
         Map<String,String[]> filterd_map=new HashMap<>();
-        for (Map.Entry<String,String[]> entry : map.entrySet())
+        MapIterator<String,String[]> iterator=new MapIterator<>(map);
+        while (iterator.hasNext())
+        {  Map.Entry<String, String[]> entry = iterator.next();
             if(entry.getKey().toLowerCase().contains(name)){
                 filterd_map.put(entry.getKey(), entry.getValue());
             }
+        }
         return filterd_map;
     }
 }
