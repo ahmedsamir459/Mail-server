@@ -64,9 +64,6 @@ public class Requests {
     public String addfolder(@PathVariable String mail,@PathVariable String name) throws Exception {
         return controll.addfolder(mail,name);
     }
-    //    @RequestMapping(value = "/moveall/{mail}/{name}/{name1}", method = RequestMethod.GET)
-//    public String moveall(@PathVariable String mail,@PathVariable String name,@PathVariable String name1) throws Exception {
-//        return controll.move_all(mail,name,name1);}
     @RequestMapping(value = "/deletemail/{email}/{filename}", method = RequestMethod.DELETE)
     public result deletemail(@RequestBody Mail[] mail,@PathVariable String email,@PathVariable String filename) throws Exception {
         return controll.delete_mail(filename,email,mail);}
@@ -74,11 +71,11 @@ public class Requests {
     public result deleteall(@PathVariable String email,@PathVariable String filename) throws Exception {;
         return controll.delete_all(filename,email);}
     @RequestMapping(value = "/moveemail/{email}/{filename}/{filename1}", method = RequestMethod.POST)
-    public String moveemail(@RequestBody Mail[] mail,@PathVariable String email,@PathVariable String filename,@PathVariable String filename1) throws Exception {;
+    public result moveemail(@RequestBody Mail[] mail,@PathVariable String email,@PathVariable String filename,@PathVariable String filename1) throws Exception {;
         return controll.move_mail(filename,filename1,email,mail);
     }
     @RequestMapping(value = "/addcontact/{mail}/{name}", method = RequestMethod.POST)
-    public  String addcontact(@PathVariable String mail,@PathVariable String name, @RequestBody String[] mail2) throws Exception {
+    public  result addcontact(@PathVariable String mail,@PathVariable String name, @RequestBody String[] mail2) throws Exception {
         return controll.addcontact(mail,name,mail2);
     }
     @RequestMapping(value = "/renamecontact/{mail}/{name}/{name2}", method = RequestMethod.GET)

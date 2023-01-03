@@ -11,5 +11,10 @@ public class FileBuilder implements IFileBuilder {
     sr.create_file(path+"//inbox.json");
     sr.create_file(path+"//trash.json");
     sr.create_file(path+"//draft.json");
-    sr.create_file(path+"//sent.json");}
+    sr.create_file(path+"//sent.json");
+    sr.create_file(path+"//restored.json");
+
+    }
+
+
 }

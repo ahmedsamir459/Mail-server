@@ -1,18 +1,10 @@
 package com.example.mailServer.Modules;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.io.File;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-
 public class Mail {
+
    private String from;
    private String  to;
    private String subject;
-
    public Mail(String from, String to, String subject, String body) {
       this.from = from;
       this.to = to;

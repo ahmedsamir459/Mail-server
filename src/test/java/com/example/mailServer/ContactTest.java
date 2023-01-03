@@ -1,13 +1,14 @@
 package com.example.mailServer;
+
 import com.example.mailServer.Modules.result;
+import com.example.mailServer.control.Control;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
-import org.springframework.boot.test.context.SpringBootTest;
-import com.example.mailServer.control.Control;
+import static org.mockito.Mockito.when;
 
 
 @SpringBootTest
@@ -20,8 +21,8 @@ public class ContactTest {
     }
     @Test
     public void testaddcontact() throws Exception {
-        when(control.addcontact("ahmed@mail.com", "wael",new String[]{"wael@mail.com"})).thenReturn("Done");
-        when(control.addcontact("ahmed@mail.com", "yosef",new String[]{"yosef@mail.com"})).thenReturn("error");
+        when(control.addcontact("ahmed@mail.com", "wael",new String[]{"wael@mail.com"})).thenReturn(new result("Done",false));
+        when(control.addcontact("ahmed@mail.com", "yosef",new String[]{"yosef@mail.com"})).thenReturn(new result("error",true));
         assertEquals("Done", control.addcontact("ahmed@mail.com", "wael", new String[]{"wael@mail.com"}));
         assertEquals("error", control.addcontact("ahmed@mail.com", "yosef", new String[]{"yosef@mail.com"}));
     }

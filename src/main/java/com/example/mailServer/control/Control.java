@@ -227,7 +227,7 @@ public class Control {
         Map<String,String[]> result=filter.meetCriteria(contacts);
         return result;
     }
-    public String move_mail(String filename1, String filename2, String email, Mail[] index) throws Exception {
+    public result move_mail(String filename1, String filename2, String email, Mail[] index) throws Exception {
         String path1=myfile.getDir_path()+"\\"+sr.get_name(email)+"\\"+filename1+".json";
         String path2=myfile.getDir_path()+"\\"+sr.get_name(email)+"\\"+filename2+".json";
         try {
@@ -247,34 +247,10 @@ public class Control {
                 iterator.increment();}
             sr.save_mails(path1, array1);
             sr.save_mails(path2, array2);
-            return "moved";}
+            return new result("done",false);}
         catch(Exception e){
-            return "error";}
+            return new result("error",true);}
     }
-    //    public String move_all(String email,String filename1, String filename2) throws Exception {
-//        String path1=myfile.getDir_path()+"\\"+sr.get_name(email)+"\\"+filename1+".json";
-//        String path2=myfile.getDir_path()+"\\"+sr.get_name(email)+"\\"+filename2+".json";
-//        JSONArray array1=sr.load_mails(path1);
-//        JSONArray array2=sr.load_mails(path2);
-//
-////        for(int i=0;i<array1.size();i++)
-////        {
-////            System.out.println(array1.get(i));
-////            array2.add(array1.get(i));
-////            array1.remove(i);
-////        }
-//        JsonArrayIterator<Object>iterator1=new JsonArrayIterator<>(array1);
-//        while (iterator1.hasNext())
-//        { Object obj=iterator1.next();
-//
-//            array2.add(obj);
-////            iterator1.remove(obj);
-//
-//        }
-//        sr.save_mails(path1,array1);
-//        sr.save_mails(path2,array2);
-//        return "done";
-//    }
     public String addfolder(String mail, String filename) throws Exception {
         String path=myfile.getDir_path()+"\\"+sr.get_name(mail)+"\\"+filename+".json";
         File file = new File(path);
@@ -299,19 +275,19 @@ public class Control {
 
         }
     }
-    public String addcontact(String mail, String name,String [] mail2) throws Exception {
+    public result addcontact(String mail, String name,String [] mail2) throws Exception {
         String path=myfile.getDir_path()+"\\"+sr.get_name(mail)+"\\"+"contacts.json";
         sr.create_file(path);
         Map<String,String[]>m=new HashMap<>();
         if(sr.getSize()!=0){
             m=load_contact(path);
             if(m.containsKey(name)){
-                return "contact already exists";
+                return new result("contact already exists",true);
             }
         }
         m.put(name,mail2);
         save_contact(path,m);
-        return "done";
+        return new result("contact added",false);
     }
     public String rename_contact(String mail, String name,String name2) throws Exception {
         String path=myfile.getDir_path()+"\\"+sr.get_name(mail)+"\\"+"contacts.json";
