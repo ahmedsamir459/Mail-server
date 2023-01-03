@@ -314,7 +314,7 @@ public class Control {
         save_contact(path,m);
         return new result("contact added",false);
     }
-    public String rename_contact(String mail, String name,String name2) throws Exception {
+    public result rename_contact(String mail, String name,String name2) throws Exception {
         String path=myfile.getDir_path()+"\\"+sr.get_name(mail)+"\\"+"contacts.json";
         Map<String,String[]> m=load_contact(path);
         if(m.containsKey(name)){
@@ -322,9 +322,9 @@ public class Control {
             m.remove(name);
             m.put(name2,m2);
             save_contact(path,m);
-            return "done";
+            return new result("contact renamed",false);
         }
-        return "contact not found";
+        return new result("contact not found",true);
     }
     public result deletecontact(String mail, String name) throws Exception {
         String path=myfile.getDir_path()+"\\"+sr.get_name(mail)+"\\"+"contacts.json";
@@ -336,17 +336,17 @@ public class Control {
         }
         return new result("contact not found",true);
     }
-    public String renamefolder(String mail, String filename1, String filename2) throws Exception {
+    public result renamefolder(String mail, String filename1, String filename2) throws Exception {
         String path1=myfile.getDir_path()+"\\"+sr.get_name(mail)+"\\"+filename1+".json";
         String path2=myfile.getDir_path()+"\\"+sr.get_name(mail)+"\\"+filename2+".json";
         File file1 = new File(path1);
         File file2 = new File(path2);
         if (file1.renameTo(file2)) {
             System.out.println("File renamed: " + file1.getName());
-            return "File renamed: " + file1.getName();
+            return new result("File renamed: " + file1.getName(),false);
         } else {
             System.out.println("File not found.");
-            return "File not found.";
+            return new result("File not found.",false);
 
         }
     }

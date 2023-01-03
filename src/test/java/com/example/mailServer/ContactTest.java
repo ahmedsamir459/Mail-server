@@ -23,8 +23,8 @@ public class ContactTest {
     public void testaddcontact() throws Exception {
         when(control.addcontact("ahmed@mail.com", "wael",new String[]{"wael@mail.com"})).thenReturn(new result("Done",false));
         when(control.addcontact("ahmed@mail.com", "yosef",new String[]{"yosef@mail.com"})).thenReturn(new result("error",true));
-        assertEquals("Done", control.addcontact("ahmed@mail.com", "wael", new String[]{"wael@mail.com"}));
-        assertEquals("error", control.addcontact("ahmed@mail.com", "yosef", new String[]{"yosef@mail.com"}));
+        assertEquals(new result("contact renamed",false), control.addcontact("ahmed@mail.com", "wael", new String[]{"wael@mail.com"}));
+        assertEquals(new result("error",true), control.addcontact("ahmed@mail.com", "yosef", new String[]{"yosef@mail.com"}));
     }
     @Test
     public void testdeletecontact() throws Exception {
@@ -35,7 +35,7 @@ public class ContactTest {
     }
     @Test
     public void testrenamecontact() throws Exception {
-        when(control.rename_contact("ahmed@mail.com", "mohamed","ahmed")).thenReturn("Done");
-        when(control.rename_contact("ahmed@mail.com", "wael","elzainy")).thenReturn("error");
+//        when(control.rename_contact("ahmed@mail.com", "mohamed","ahmed")).thenReturn("Done");
+//        when(control.rename_contact("ahmed@mail.com", "wael","elzainy")).thenReturn("error");
     }
 }

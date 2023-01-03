@@ -79,7 +79,7 @@ public class Requests {
         return controll.addcontact(mail,name,mail2);
     }
     @RequestMapping(value = "/renamecontact/{mail}/{name}/{name2}", method = RequestMethod.GET)
-    public  String renamecontact(@PathVariable String mail,@PathVariable String name, @PathVariable String name2) throws Exception {
+    public  result renamecontact(@PathVariable String mail,@PathVariable String name, @PathVariable String name2) throws Exception {
         return controll.rename_contact(mail,name,name2);
     }
     @RequestMapping(value = "/deletecontact/{mail}/{name}", method = RequestMethod.DELETE)
@@ -102,7 +102,7 @@ public class Requests {
     }
 
     @RequestMapping(value = "/renamefolder/{mail}/{name}/{name1}", method = RequestMethod.GET)
-    public  String renamefolder(@PathVariable String mail, @PathVariable String name,@PathVariable String name1) throws Exception {
+    public  result renamefolder(@PathVariable String mail, @PathVariable String name,@PathVariable String name1) throws Exception {
         return controll.renamefolder(mail,name,name1);
     }
 
