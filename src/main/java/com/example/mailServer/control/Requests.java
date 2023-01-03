@@ -128,7 +128,7 @@ public class Requests {
         return controll.handleattachmnets1(attachments,to,from);
     }
     @RequestMapping(value="/filesreload/{email}",method = RequestMethod.GET)
-    public Map<String, Integer> relod(@PathVariable String email) throws Exception {
+    public Map<String, Integer> reload(@PathVariable String email) throws Exception {
         return controll.reload(email);
     }
 

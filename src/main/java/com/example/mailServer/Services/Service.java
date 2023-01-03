@@ -58,8 +58,14 @@ public class Service {
                             if(path.toString().contains("contact")){
                                 File file = new File(path.toString());
                                 MapAdapter mapAdapter=new MapAdapter();
-                                HashMap<String,String[]>m=mapAdapter.getSMap(file);
-                                files.put(path.getFileName().toString().replaceFirst("[.][^.]+$", ""),m.size());
+                                if(file.length()!=0){
+                                    HashMap<String,String[]>m=mapAdapter.getSMap(file);
+                                    files.put(path.getFileName().toString().replaceFirst("[.][^.]+$", ""),m.size());
+                                }
+                                else{
+                                    files.put(path.getFileName().toString().replaceFirst("[.][^.]+$", ""),0);
+                                }
+
                             }
                             else files.put(path.getFileName().toString().replaceFirst("[.][^.]+$", ""), (int) load_mails(path.toString()).size());
                         } catch (ParseException e) {
