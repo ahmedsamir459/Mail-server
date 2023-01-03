@@ -40,7 +40,7 @@ public class Requests {
     }
     @RequestMapping(value="/adddraft/{email}",method = RequestMethod.POST)
     @ResponseBody
-    public String adddraft(@RequestBody Mail mail, @PathVariable String email) throws Exception {
+    public result adddraft(@RequestBody Mail mail, @PathVariable String email) throws Exception {
         return controll.adddraft(email,mail);
     }
     @RequestMapping(value = "/load/{email}/{fileName}",method = RequestMethod.GET)

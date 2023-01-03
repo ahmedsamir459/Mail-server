@@ -263,9 +263,13 @@ public class Control {
 
         }
     }
+
     public result deletefolder(String mail, String filename) throws Exception {
         String path=myfile.getDir_path()+"\\"+sr.get_name(mail)+"\\"+filename+".json";
         File file = new File(path);
+        System.out.println(file.delete());
+        System.out.println(path);
+        file.delete();
         if (file.delete()) {
             System.out.println("File deleted: " + file.getName());
             return new result("File deleted: " + file.getName(),true);
@@ -325,12 +329,12 @@ public class Control {
 
         }
     }
-    public String adddraft(String mail, Mail index) throws Exception {
+    public result adddraft(String mail, Mail index) throws Exception {
         String path=myfile.getDir_path()+"\\"+sr.get_name(mail)+"\\"+"draft.json";
         JSONArray array=sr.load_mails(path);
         JSONObject json=new JSONObject(index);
         sr.save_mails(path,array);
-        return "done";
+        return new result("done",false);
     }
     public Path getfiles(String fileName,String from2) throws Exception {
         String from=sr.get_name(from2);
@@ -369,6 +373,7 @@ public class Control {
         String path=myfile.getDir_path()+"\\"+sr.get_name(email);
         return sr.getfiles(path);
     }
+
 
 
 }
