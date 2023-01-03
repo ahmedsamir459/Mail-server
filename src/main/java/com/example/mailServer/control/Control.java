@@ -1,35 +1,34 @@
 package com.example.mailServer.control;
 
 import com.example.mailServer.Adapter.MapAdapter;
+import com.example.mailServer.Builder.FileBuilder;
 import com.example.mailServer.ContactFilter.ContactFilter;
 import com.example.mailServer.DateComp.Day30;
-import com.example.mailServer.EmailsFilter.Sort;
-import com.example.mailServer.Iterator.ArrayIterator;
-import com.example.mailServer.Iterator.JsonArrayIterator;
-import com.example.mailServer.Singlton.FileSinglton;
 import com.example.mailServer.EmailsFilter.EmailFilter;
-import com.example.mailServer.Builder.FileBuilder;
+import com.example.mailServer.EmailsFilter.Sort;
 import com.example.mailServer.Modules.Mail;
-import com.example.mailServer.Services.Service;
 import com.example.mailServer.Modules.result;
 import com.example.mailServer.Proxy.Proxy;
+import com.example.mailServer.Services.Service;
+import com.example.mailServer.Singlton.FileSinglton;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 import org.json.simple.JSONArray;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 
@@ -52,12 +51,13 @@ public class Control {
     }
     public JSONArray load_file(String email,String filename) throws Exception {
         String path=myfile.getDir_path()+File.separator+sr.get_name(email)+File.separator+filename+".json";
+        System.out.println("hn"+path);
         if(filename.equalsIgnoreCase("trash")){
             try{
-                JSONParser parser = new JSONParser();
                 Day30 day30=new Day30();
                 JSONArray array;
-                array = (JSONArray) parser.parse(new FileReader(path));
+                ObjectMapper mapper = new ObjectMapper();
+                array =mapper.readValue(new File(path), JSONArray.class);
                 array=day30.filter30days(array);
                 sr.save_mails(path, array);
                 return array;}
@@ -67,9 +67,13 @@ public class Control {
         }
         else{
             try{
-                JSONParser parser = new JSONParser();
-                org.json.simple.JSONArray array;
-                array = (org.json.simple.JSONArray) parser.parse(new FileReader(path));
+                org.json.simple.JSONArray array = new org.json.simple.JSONArray();
+                File file = new File(path);
+                System.out.println(file.length());
+                if(file.length()!=0){
+                ObjectMapper mapper = new ObjectMapper();
+                array =mapper.readValue(file,JSONArray.class);
+                }
                 return array;}
             catch(Exception e){
                 return new JSONArray();}
@@ -185,25 +189,32 @@ public class Control {
     public result delete_mail(String filename, String email, Mail[] index) throws Exception {
         String path1=myfile.getDir_path()+"\\"+sr.get_name(email)+"\\"+filename+".json";
         JSONArray array=sr.load_mails(path1);
-        if(filename!="trash"){
-            trashed(email,index);
-        }
+        System.out.println(array.size());
+        if(filename!="trash"){trashed(email,index);}
         try {
-            ArrayIterator<Mail> iterator=new ArrayIterator<>(index);
-
-            while (iterator.hasNext())
-            {   JSONObject json = new JSONObject(iterator.next());
-                JsonArrayIterator<Object>iterator1=new JsonArrayIterator<>(array);
-                while ((iterator1.hasNext()))
-                {   Object obj=iterator1.next();
-                    if (obj.toString().equals(json.toString())) {
-                        array.remove(iterator1.getIndex());
+                for (int j = 0; j < index.length; j++) {
+                JSONObject json1 = new JSONObject(index[j]);
+                for (int i = 0; i < array.size(); i++) {
+                    String index1 = array.get(i).toString().replace(" ", "").replace(":","=");
+                    String index2 =json1.toString().replace("\"","").replace(":","=").replace(" ","");
+                    if (index1.equalsIgnoreCase(index2)) {
+                        array.remove(i);
                         break;}
-                    iterator1.increment();
-                }
-                iterator.increment();
 
+                }
             }
+//                while ((iterator1.hasNext()))
+//                {   Object obj=iterator1.next();
+//                    if (obj.toString().equals(json.toString())) {
+//                        System.out.println("hna"+array);
+//                        System.out.println("hna"+json.toString());
+//                        array.remove(iterator1.getIndex());
+//                        break;}
+//                    iterator1.increment();
+//                }
+//                iterator.increment();
+//
+//            }
             sr.save_mails(path1, array);
             return new result("deleted", true);
         }
@@ -233,18 +244,30 @@ public class Control {
         try {
             JSONArray array1 = sr.load_mails(path1);
             JSONArray array2 = sr.load_mails(path2);
-            ArrayIterator<Mail> iterator=new ArrayIterator<>(index);
-            while (iterator.hasNext())
-            {   JSONObject json = new JSONObject(iterator.next());
-                JsonArrayIterator<Object>iterator1=new JsonArrayIterator<>(array1);
-                while ((iterator1.hasNext()))
-                {    Object obj=iterator1.next();
-                    if (obj.toString().equals(json.toString())) {
-                        array2.add(obj);
-                        array1.remove(iterator1.getIndex());
-                        break;}
-                    iterator1.increment();;}
-                iterator.increment();}
+                        for (int j = 0; j < index.length; j++) {
+                JSONObject json = new JSONObject(index[j]);
+                for (int i = 0; i < array1.size(); i++) {
+                    String index1 = array1.get(i).toString().replace(" ", "").replace(":","=");
+                    String index2 =json.toString().replace("\"","").replace(":","=").replace(" ","");
+                    if (index1.equals(index2)) {
+                        array2.add(array1.get(i));
+                        array1.remove(i);
+                        break;
+                    }
+                }
+            }
+//            ArrayIterator<Mail> iterator=new ArrayIterator<>(index);
+//            while (iterator.hasNext())
+//            {   JSONObject json = new JSONObject(iterator.next());
+//                JsonArrayIterator<Object>iterator1=new JsonArrayIterator<>(array1);
+//                while ((iterator1.hasNext()))
+//                {    Object obj=iterator1.next();
+//                    if (obj.toString().equals(json.toString())) {
+//                        array2.add(obj);
+//                        array1.remove(iterator1.getIndex());
+//                        break;}
+//                    iterator1.increment();;}
+//                iterator.increment();}
             sr.save_mails(path1, array1);
             sr.save_mails(path2, array2);
             return new result("done",false);}
@@ -264,12 +287,10 @@ public class Control {
         }
     }
 
+
     public result deletefolder(String mail, String filename) throws Exception {
         String path=myfile.getDir_path()+"\\"+sr.get_name(mail)+"\\"+filename+".json";
         File file = new File(path);
-        System.out.println(file.delete());
-        System.out.println(path);
-        file.delete();
         if (file.delete()) {
             System.out.println("File deleted: " + file.getName());
             return new result("File deleted: " + file.getName(),true);

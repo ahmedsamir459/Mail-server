@@ -1,14 +1,11 @@
 package com.example.mailServer.Services;
 
 import com.example.mailServer.Adapter.MapAdapter;
-import com.fasterxml.jackson.core.exc.StreamReadException;
-import com.fasterxml.jackson.databind.DatabindException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONArray;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -47,7 +44,7 @@ public class Service {
     public int getSize(){
         return size;
     }
-    public Map<String, Integer> getfiles(String foldername) throws IOException {
+    public Map<String, Integer> getfiles(String foldername) throws IOException, ParseException {
         Path folderPath = Paths.get(foldername);
         HashMap<String, Integer> files = new HashMap<>();
         try (Stream<Path> paths = Files.walk(folderPath)) {
@@ -64,37 +61,46 @@ public class Service {
                                 }
                                 else{
                                     files.put(path.getFileName().toString().replaceFirst("[.][^.]+$", ""),0);
+
                                 }
 
                             }
-                            else files.put(path.getFileName().toString().replaceFirst("[.][^.]+$", ""), (int) load_mails(path.toString()).size());
-                        } catch (ParseException e) {
-                            throw new RuntimeException(e);
-                        } catch (StreamReadException e) {
-                            throw new RuntimeException(e);
-                        } catch (DatabindException e) {
-                            throw new RuntimeException(e);
-                        } catch (IOException e) {
+                            else files.put(path.getFileName().toString().replaceFirst("[.][^.]+$", ""), load_mails(path.toString()).size());
+
+                        } catch (ParseException | IOException e) {
                             throw new RuntimeException(e);
                         }
                     });
+
         }
+//        File folder = new File(foldername);
+//        File[] listOfFiles = folder.listFiles();
+//        for (int i = 0; i < listOfFiles.length; i++) {
+//            if (listOfFiles[i].isFile()) {
+//                files.put(listOfFiles[i].getName().replaceFirst("[.][^.]+$", ""), load_mails(listOfFiles[i].getPath()).size());
+//                System.out.println(listOfFiles[i].canExecute());
+//            } else if (listOfFiles[i].isDirectory()) {
+//                System.out.println("Directory " + listOfFiles[i].getName());
+//            }
+//        }
         return files;
     }
-    public String get_name(String email) throws Exception {
-        String filename = "";
+    public String get_name(String email) {
+        String filename;
         int index = email.indexOf("@");
         filename = email.substring(0, index);
         return filename;
     }
     public JSONArray load_mails(String filename) throws ParseException {
         try{
-            JSONParser parser = new JSONParser();
             org.json.simple.JSONArray array;
-            array = (org.json.simple.JSONArray) parser.parse(new FileReader(filename));
+            ObjectMapper mapper = new ObjectMapper();
+            array =mapper.readValue(new File(filename), JSONArray.class);
+            System.out.println(array.toString());
             return array;}
         catch(Exception e){
             return new JSONArray();
+
         }
 
     }

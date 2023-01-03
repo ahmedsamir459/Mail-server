@@ -4,19 +4,15 @@ import java.util.Map;
 
 public class ContactFilter implements IContactFilter {
     private String name;
-
     public ContactFilter(String name) {
         this.name = name;
     }
-
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
     @Override
     public Map<String, String[]> meetCriteria(Map<String, String[]> map) {
         Map<String,String[]> filterd_map=new HashMap<>();
