@@ -1,4 +1,4 @@
-package com.example.mailServer.EmailsFilter;
+package com.example.mailServer.Sort;
 
 import com.example.mailServer.DateComp.DateComp;
 import com.example.mailServer.Modules.Mail;
@@ -8,10 +8,11 @@ import org.json.simple.JSONArray;
 
 import java.util.*;
 
-public class Sort {
+public class EmailSort {
     public ArrayList<Mail> sort(JSONArray array, String s,boolean value) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Mail [] Array = mapper.readValue(array.toString(), Mail[].class);
+
         PriorityQueue<Mail> queue=new PriorityQueue<>();
         if(value){
             if(s.equals("subject")) {queue=new PriorityQueue<>(Comparator.comparing(Mail::getSubject));}

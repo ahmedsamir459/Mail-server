@@ -2,6 +2,7 @@ package com.example.mailServer.EmailsFilter;
 
 import com.example.mailServer.Adapter.ArrayAdapter;
 import com.example.mailServer.Modules.Mail;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.simple.JSONArray;
 
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class EmailFilter implements Filter {
     }
 
     @Override
-    public ArrayList<Mail> meetCriteria(JSONArray emails) {
+    public ArrayList<Mail> meetCriteria(JSONArray emails) throws JsonProcessingException {
         ArrayAdapter arrayAdapter = new ArrayAdapter();
         ArrayList<Mail> filteredEmails = new ArrayList<>();
         ArrayList<Mail> emailsList =arrayAdapter.getMyarray(emails);

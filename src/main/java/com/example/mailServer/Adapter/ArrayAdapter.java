@@ -1,19 +1,21 @@
 package com.example.mailServer.Adapter;
 
 import com.example.mailServer.Modules.Mail;
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONObject;
 import org.json.simple.JSONArray;
-
 import java.util.ArrayList;
-
 public class ArrayAdapter {
     private ArrayList<Mail> myarray;
-    public ArrayList<Mail> getMyarray(JSONArray emails) {
+    public ArrayList<Mail> getMyarray(JSONArray emails){
         myarray= new ArrayList<>();
-        for (int i=0;i<emails.size();i++){
-            Gson gson = new Gson();
-            Mail mail = gson.fromJson(emails.get(i).toString(), Mail.class);
-            myarray.add(mail);
+        ObjectMapper    mapper = new ObjectMapper();
+        Mail[] Array = mapper.convertValue(emails, Mail[].class);
+        JSONArray array = new JSONArray();
+        for(int i=0;i<Array.length;i++){
+            myarray.add(Array[i]);
+            JSONObject obj = new JSONObject(Array[i]);
+            array.add(obj);
         }
         return myarray;
     }

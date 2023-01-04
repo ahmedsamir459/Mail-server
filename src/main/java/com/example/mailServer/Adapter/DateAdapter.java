@@ -5,7 +5,8 @@ import java.time.format.DateTimeFormatter;
 
 public class DateAdapter {
     public LocalDateTime aetDate(String aetDate) {
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
-        return LocalDateTime.parse(aetDate, formatter);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy, hh:mm:ss a");
+        LocalDateTime date = LocalDateTime.parse(aetDate.toLowerCase(), formatter);
+        return date;
     }
 }

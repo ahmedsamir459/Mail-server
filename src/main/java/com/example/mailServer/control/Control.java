@@ -5,7 +5,8 @@ import com.example.mailServer.Builder.FileBuilder;
 import com.example.mailServer.ContactFilter.ContactFilter;
 import com.example.mailServer.DateComp.Day30;
 import com.example.mailServer.EmailsFilter.EmailFilter;
-import com.example.mailServer.EmailsFilter.Sort;
+import com.example.mailServer.Sort.ContactSort;
+import com.example.mailServer.Sort.EmailSort;
 import com.example.mailServer.Modules.Mail;
 import com.example.mailServer.Modules.result;
 import com.example.mailServer.Proxy.Proxy;
@@ -49,6 +50,14 @@ public class Control {
         }
         else return map;
     }
+    public Map<String, String[]> sort_contact(String filename,boolean value) throws IOException {
+        HashMap<String, String[]> map=load_contact(filename);
+        Map<String, String[]> sorted_map = new HashMap<>();
+        ContactSort cs = new ContactSort();
+        sorted_map = cs.sort(map,value);
+        return sorted_map;
+    }
+
     public JSONArray load_file(String email,String filename) throws Exception {
         String path=myfile.getDir_path()+File.separator+sr.get_name(email)+File.separator+filename+".json";
         System.out.println("hn"+path);
@@ -168,6 +177,7 @@ public class Control {
         }
     }
     public JSONArray filter(String feature, String target, String filename) throws IOException, ParseException {
+        ObjectMapper mapper = new ObjectMapper();
         JSONArray array=sr.load_mails(filename);
         System.out.println("array"+array);
         EmailFilter filter=new EmailFilter(feature,target);
@@ -179,7 +189,7 @@ public class Control {
     public JSONArray sort(String email,String feature, String filename,boolean value) throws Exception {
         String path=myfile.getDir_path()+File.separator+sr.get_name(email)+File.separator+filename+".json";
         JSONArray array=sr.load_mails(path);
-        Sort sort=new Sort();
+        EmailSort sort=new EmailSort();
         ArrayList array1=sort.sort(array,feature,value);
         JSONArray array2=new JSONArray();
         array2.addAll(array1);
@@ -317,7 +327,13 @@ public class Control {
     public result rename_contact(String mail, String name,String name2) throws Exception {
         String path=myfile.getDir_path()+"\\"+sr.get_name(mail)+"\\"+"contacts.json";
         Map<String,String[]> m=load_contact(path);
+        JSONObject json = new JSONObject(m);
+        System.out.println(json.toString());
+        System.out.println(m.containsKey(name));
         if(m.containsKey(name)){
+            if(m.containsKey(name2)){
+                return new result("contact already exists",true);
+            }
             String [] m2=m.get(name);
             m.remove(name);
             m.put(name2,m2);
@@ -332,10 +348,9 @@ public class Control {
         if(map.containsKey(name)){
             map.remove(name);
             save_contact(path,map);
-            return new result("done",false);
-        }
-        return new result("contact not found",true);
-    }
+            return new result("done",false);}
+        return new result("contact not found",true);}
+
     public result renamefolder(String mail, String filename1, String filename2) throws Exception {
         String path1=myfile.getDir_path()+"\\"+sr.get_name(mail)+"\\"+filename1+".json";
         String path2=myfile.getDir_path()+"\\"+sr.get_name(mail)+"\\"+filename2+".json";

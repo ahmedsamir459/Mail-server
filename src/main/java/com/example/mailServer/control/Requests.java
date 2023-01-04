@@ -91,7 +91,11 @@ public class Requests {
         String path=controll.myfile.getDir_path()+"\\"+controll.sr.get_name(mail)+"\\"+"contacts.json";
         return controll.load_contact(path);
     }
-
+    @RequestMapping(value = "/sortcontact/{mail}/{value}", method = RequestMethod.GET)
+    public Map<String, String[]> sortcontact(@PathVariable String mail,@PathVariable boolean value) throws Exception {
+        String path=controll.myfile.getDir_path()+"\\"+controll.sr.get_name(mail)+"\\"+"contacts.json";
+        return controll.sort_contact(path,value);
+    }
     @RequestMapping(value = "/deletefolder/{mail}/{name}", method = RequestMethod.DELETE)
     public  result deletefolder(@PathVariable String mail, @PathVariable String name) throws Exception {
         return controll.deletefolder(mail,name);
@@ -100,12 +104,10 @@ public class Requests {
     public Map<String, String[]> filtercontact(@PathVariable String email,@PathVariable String target) throws Exception {
         return controll.filtercontact(email,target);
     }
-
     @RequestMapping(value = "/renamefolder/{mail}/{name}/{name1}", method = RequestMethod.GET)
     public  result renamefolder(@PathVariable String mail, @PathVariable String name,@PathVariable String name1) throws Exception {
         return controll.renamefolder(mail,name,name1);
     }
-
     @GetMapping("/getfiles/{fileName}/{from}")
     public ResponseEntity<UrlResource>  getFiles (@PathVariable String fileName,@PathVariable String from) throws Exception {
         Path paths = controll.getfiles(fileName,from);
@@ -128,6 +130,5 @@ public class Requests {
     public Map<String, Integer> reload(@PathVariable String email) throws Exception {
         return controll.reload(email);
     }
-
 
 }
