@@ -369,6 +369,7 @@ public class Control {
         String path=myfile.getDir_path()+"\\"+sr.get_name(mail)+"\\"+"draft.json";
         JSONArray array=sr.load_mails(path);
         JSONObject json=new JSONObject(index);
+        array.add(json);
         sr.save_mails(path,array);
         return new result("done",false);
     }

@@ -1,6 +1,7 @@
 package com.example.mailServer.Services;
 
 import com.example.mailServer.Adapter.MapAdapter;
+import com.example.mailServer.DateComp.Day30;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.ParseException;
@@ -65,7 +66,14 @@ public class Service {
                                 }
 
                             }
-                            else files.put(path.getFileName().toString().replaceFirst("[.][^.]+$", ""), load_mails(path.toString()).size());
+                            else {
+                                Day30 day30 = new Day30();
+                                JSONArray jsonArray = load_mails(path.toString());
+                                if(path.toString().contains("trash"))
+                                files.put(path.getFileName().toString().replaceFirst("[.][^.]+$", ""), day30.filter30days(jsonArray).size());
+                                else
+                                    files.put(path.getFileName().toString().replaceFirst("[.][^.]+$", ""),jsonArray.size());
+                            };
 
                         } catch (ParseException | IOException e) {
                             throw new RuntimeException(e);
