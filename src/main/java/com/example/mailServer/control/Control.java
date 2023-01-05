@@ -1,17 +1,20 @@
 package com.example.mailServer.control;
 
+import com.example.mailServer.Adapter.ArrayAdapter;
 import com.example.mailServer.Adapter.MapAdapter;
 import com.example.mailServer.Builder.FileBuilder;
 import com.example.mailServer.ContactFilter.ContactFilter;
 import com.example.mailServer.DateComp.Day30;
 import com.example.mailServer.EmailsFilter.EmailFilter;
-import com.example.mailServer.Sort.ContactSort;
-import com.example.mailServer.Sort.EmailSort;
+import com.example.mailServer.Iterator.ArrayIterator;
+import com.example.mailServer.Iterator.JsonArrayIterator;
 import com.example.mailServer.Modules.Mail;
 import com.example.mailServer.Modules.result;
 import com.example.mailServer.Proxy.Proxy;
 import com.example.mailServer.Services.Service;
 import com.example.mailServer.Singlton.FileSinglton;
+import com.example.mailServer.Sort.ContactSort;
+import com.example.mailServer.Sort.EmailSort;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
@@ -61,15 +64,22 @@ public class Control {
     public JSONArray load_file(String email,String filename) throws Exception {
         String path=myfile.getDir_path()+File.separator+sr.get_name(email)+File.separator+filename+".json";
         System.out.println("hn"+path);
+        EmailSort es=new EmailSort();
+        ArrayAdapter ar=new ArrayAdapter();
         if(filename.equalsIgnoreCase("trash")){
+
             try{
                 Day30 day30=new Day30();
                 JSONArray array;
+                JSONArray array2=new JSONArray();
                 ObjectMapper mapper = new ObjectMapper();
                 array =mapper.readValue(new File(path), JSONArray.class);
                 array=day30.filter30days(array);
+                ArrayList sorted=es.sort((JSONArray) array.clone(),"date",false);
+                array2=ar.getJsonArray(sorted);
+                array2=mapper.readValue(array2.toString(),JSONArray.class);
                 sr.save_mails(path, array);
-                return array;}
+                return array2;}
             catch(Exception e){
                 return new JSONArray();
             }
@@ -77,13 +87,17 @@ public class Control {
         else{
             try{
                 org.json.simple.JSONArray array = new org.json.simple.JSONArray();
+                JSONArray array2=new JSONArray();
                 File file = new File(path);
-                System.out.println(file.length());
                 if(file.length()!=0){
-                ObjectMapper mapper = new ObjectMapper();
-                array =mapper.readValue(file,JSONArray.class);
+                    ObjectMapper mapper = new ObjectMapper();
+                    array =mapper.readValue(file,JSONArray.class);
+                    ArrayList sorted=es.sort((JSONArray) array.clone(),"date",false);
+                    array2=ar.getJsonArray(sorted);
+                    array2=mapper.readValue(array2.toString(),JSONArray.class);
+
                 }
-                return array;}
+                return array2;}
             catch(Exception e){
                 return new JSONArray();}
         }
@@ -96,7 +110,6 @@ public class Control {
     public void trashed(String email,Mail[] mail) throws Exception {
         String path=myfile.getDir_path()+"\\"+sr.get_name(email)+"\\trash.json";
         JSONArray array=sr.load_mails(path);
-        for(Mail m:mail) {System.out.println(m.getFrom());}
         for(int i=0;i<mail.length;i++){
             JSONObject jsonObject=new JSONObject(mail[i]);
             array.add(jsonObject);}
@@ -113,7 +126,6 @@ public class Control {
             int size = (int) Files.size(path);
             if (size != 0) {
                 result = vl.check_user_signup(email,password,users,myfile.getMyObj());
-                System.out.println(result);
                 if (result.equals("not found")) {
                     FileBuilder f = new FileBuilder();
                     f.BuildFile(sr.get_name(email), myfile.getDir_path());
@@ -123,7 +135,6 @@ public class Control {
                     });
                     users.put(email, password);
                     JSONObject jsonObj = new JSONObject(users);
-//                    System.out.println(jsonObj + "hena");
                     FileWriter myWriter = new FileWriter(myfile.getPath());
                     myWriter.append(jsonObj.toString());
                     myWriter.close();}}
@@ -131,7 +142,6 @@ public class Control {
 
                 FileBuilder f = new FileBuilder();
                 f.BuildFile(sr.get_name(email), myfile.getDir_path());
-                System.out.println("else");
                 result = "not found";
                 users.put(email, password);
                 JSONObject jsonObj = new JSONObject(users);
@@ -179,7 +189,6 @@ public class Control {
     public JSONArray filter(String feature, String target, String filename) throws IOException, ParseException {
         ObjectMapper mapper = new ObjectMapper();
         JSONArray array=sr.load_mails(filename);
-        System.out.println("array"+array);
         EmailFilter filter=new EmailFilter(feature,target);
         ArrayList result=filter.meetCriteria(array);
         JSONArray array1=new JSONArray();
@@ -199,19 +208,45 @@ public class Control {
     public result delete_mail(String filename, String email, Mail[] index) throws Exception {
         String path1=myfile.getDir_path()+"\\"+sr.get_name(email)+"\\"+filename+".json";
         JSONArray array=sr.load_mails(path1);
-        System.out.println(array.size());
+        System.out.println(filename);
+        System.out.println(email);
+        JSONArray jsonObject=new JSONArray();
+        for(int i=0;i<index.length;i++){
+            jsonObject.add(new JSONObject(index[i]));
+        }
+        System.out.println(jsonObject);
         if(filename!="trash"){trashed(email,index);}
         try {
-                for (int j = 0; j < index.length; j++) {
-                JSONObject json1 = new JSONObject(index[j]);
-                for (int i = 0; i < array.size(); i++) {
-                    String index1 = array.get(i).toString().replace(" ", "").replace(":","=");
-                    String index2 =json1.toString().replace("\"","").replace(":","=").replace(" ","");
+//            for (int j = 0; j < index.length; j++) {
+//                JSONObject json1 = new JSONObject(index[j]);
+//                System.out.println("malk");
+//                System.out.println(array);
+//                for (int i = 0; i < array.size(); i++) {
+//                    System.out.println("feh ehhhhh");
+//                    String index1 = array.get(i).toString().replace(" ", "").replace(":","=");
+//                    String index2 =json1.toString().replace("\"","").replace(":","=").replace(" ","");
+//                    if (index1.equalsIgnoreCase(index2)) {
+//                        System.out.println(index1);
+//                        System.out.println(index2);
+//                        array.remove(i);
+//                        break;}
+//                }
+//            }
+            ArrayIterator<Mail> iterator=new ArrayIterator<>(index);
+            while (iterator.hasNext())
+            {   JSONObject json = new JSONObject(iterator.next());
+                JsonArrayIterator<Object> iterator1=new JsonArrayIterator<>(array);
+                while ((iterator1.hasNext()))
+                {   Object obj=iterator1.next();
+                    String index1 = obj.toString().replace(" ", "").replace(":","=");
+                    String index2 =json.toString().replace("\"","").replace(":","=").replace(" ","");
                     if (index1.equalsIgnoreCase(index2)) {
-                        array.remove(i);
+                        array.remove(iterator1.getIndex());
                         break;}
-
+                    iterator1.increment();
                 }
+                iterator.increment();
+
             }
 //                while ((iterator1.hasNext()))
 //                {   Object obj=iterator1.next();
@@ -254,7 +289,11 @@ public class Control {
         try {
             JSONArray array1 = sr.load_mails(path1);
             JSONArray array2 = sr.load_mails(path2);
-                        for (int j = 0; j < index.length; j++) {
+            System.out.println(filename1);
+            System.out.println(filename2);
+            System.out.println(email);
+            System.out.println(index.toString());
+            for (int j = 0; j < index.length; j++) {
                 JSONObject json = new JSONObject(index[j]);
                 for (int i = 0; i < array1.size(); i++) {
                     String index1 = array1.get(i).toString().replace(" ", "").replace(":","=");
@@ -328,8 +367,6 @@ public class Control {
         String path=myfile.getDir_path()+"\\"+sr.get_name(mail)+"\\"+"contacts.json";
         Map<String,String[]> m=load_contact(path);
         JSONObject json = new JSONObject(m);
-        System.out.println(json.toString());
-        System.out.println(m.containsKey(name));
         if(m.containsKey(name)){
             if(m.containsKey(name2)){
                 return new result("contact already exists",true);

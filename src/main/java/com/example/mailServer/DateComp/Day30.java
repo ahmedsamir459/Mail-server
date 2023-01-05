@@ -15,6 +15,7 @@ public class Day30 {
       for (int i = 0; i < array.size(); i++) {
          LocalDateTime date = dateAdapter.aetDate(Array[i].getDate());
          if (date.isAfter(thirtyDaysAgo)) {
+            System.out.println("Date is after 30 days"+array.get(i).toString());
             filteredArray.add(array.get(i));}}
       return filteredArray;
    }

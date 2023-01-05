@@ -124,8 +124,6 @@ public class Requests {
     }
     @PostMapping("/attachments/{to}/{from}")
     public ArrayList<String> handleattachmnets(@RequestParam("attachment") MultipartFile [] attachments, @PathVariable  String to, @PathVariable String from) throws Exception {
-        System.out.println(to);
-        System.out.println(from);
         return controll.handleattachmnets1(attachments,to,from);
     }
     @RequestMapping(value="/filesreload/{email}",method = RequestMethod.GET)

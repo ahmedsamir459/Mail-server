@@ -22,8 +22,6 @@ public class Service {
         java.io.File myObj = null;
         try {
             myObj = new java.io.File(path);
-            System.out.println(myObj.length());
-            System.out.println(myObj);
             if (myObj.createNewFile()) {
                 System.out.println("File created: " + myObj.getName());
             } else {
@@ -69,8 +67,11 @@ public class Service {
                             else {
                                 Day30 day30 = new Day30();
                                 JSONArray jsonArray = load_mails(path.toString());
-                                if(path.toString().contains("trash"))
-                                files.put(path.getFileName().toString().replaceFirst("[.][^.]+$", ""), day30.filter30days(jsonArray).size());
+
+                                if(path.toString().contains("trash")) {
+                                    System.out.println("trash"+jsonArray);
+                                    files.put(path.getFileName().toString().replaceFirst("[.][^.]+$", ""), day30.filter30days(jsonArray).size());
+                                }
                                 else
                                     files.put(path.getFileName().toString().replaceFirst("[.][^.]+$", ""),jsonArray.size());
                             };
@@ -104,7 +105,7 @@ public class Service {
             org.json.simple.JSONArray array;
             ObjectMapper mapper = new ObjectMapper();
             array =mapper.readValue(new File(filename), JSONArray.class);
-            System.out.println(array.toString());
+            if (filename.contains("trash"))System.out.println("el3"+array);
             return array;}
         catch(Exception e){
             return new JSONArray();

@@ -12,7 +12,6 @@ public class EmailSort {
     public ArrayList<Mail> sort(JSONArray array, String s,boolean value) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Mail [] Array = mapper.readValue(array.toString(), Mail[].class);
-
         PriorityQueue<Mail> queue=new PriorityQueue<>();
         if(value){
             if(s.equals("subject")) {queue=new PriorityQueue<>(Comparator.comparing(Mail::getSubject));}

@@ -19,4 +19,12 @@ public class ArrayAdapter {
         }
         return myarray;
     }
+    public JSONArray getJsonArray(ArrayList emails){
+        JSONArray array = new JSONArray();
+        for(int i=0;i<emails.size();i++){
+            JSONObject obj = new JSONObject(emails.get(i));
+            array.add(obj);
+        }
+        return array;
+    }
 }
