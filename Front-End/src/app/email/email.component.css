@@ -1,0 +1,248 @@
+.main{
+    display: flex;
+    flex-direction: row;
+    /* margin: 20px 10px 20px 10px; */
+}
+
+.sectiontwo{
+    font:30px;
+    color: black;
+    padding: 10px;
+    display: flex;
+    height: 83vh;
+    width: 80%;
+    margin: 5px 15px 5px 5px;
+    border: 2px solid black;
+    flex-direction: column;
+    border-radius: 20px;    
+    background-color:rgba(255, 252, 252, 0.658);
+}
+
+
+#header{
+    flex-flow:row nowrap;
+    justify-content: center;
+    text-align: center;
+    color:beige;
+    font-size: 40px;
+    margin: 25px 5px;
+    font-weight: bold;
+    font-stretch:expanded;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+}
+
+a{
+    text-decoration:none;
+}
+.top{
+    display:flex;
+    border-radius: 15px;
+    border:2px solid black;
+    margin: 5px 15px 5px 15px;
+    height: 12vh;
+    background-color: rgba(126, 162, 228, 0.473);
+
+}
+.top img{
+    width: 80px;
+    height:10vh;
+    margin: 5px 5px 5px 5px;
+    border-radius:15px;
+
+}
+
+.sidebuttons {
+    display:flex;
+    margin-left: 930px;
+    position: relative;
+ 
+}
+.sidebuttons a{
+    display: flex;
+    width :50px;
+    flex-flow: row nowrap;
+    text-align: center;
+    border: 2px solid darkgrey;
+    margin: 10px 10px;
+    padding: 0.5rem 0.3rem;
+    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3),0 1px 3px 1px rgba(60, 64, 67, 0.15);
+    font-size: 15px;
+    background-color: darkgray;
+    border-radius: 80px;
+    color :darkgoldenrod;
+    font-weight: bold;
+    height: 50px;
+    min-width: 56px;
+    align-items: center;
+}
+.sidebuttons a:hover{
+    cursor: pointer;
+    background-color: coral;
+}
+
+.sidebuttons img{
+    width:30px;
+    height:30px;
+    margin-right:5px;
+    border-radius:0px;
+}
+
+  
+.sidebuttons .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: lightgray;
+    color: black;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;   
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    left: 50%;
+    margin-left: -60px;
+}
+  
+  .sidebuttons :hover .tooltiptext {
+    visibility: visible;
+  }
+
+
+.inmain{
+    background-color: white;
+    height: 80vh;
+    border-radius: 15px;
+
+}
+
+.subject {
+    height: 70px;
+    width:100%;
+    border-radius:15px;
+    display: flex;
+}
+.subject a{
+    margin-left: 15px;
+    margin-top: 25px;
+    font-size: 30px;
+}
+
+.priority{
+    display:flex;
+    flex-direction: column;
+    margin-left: 10px;
+    justify-content: center;
+    text-align: center;
+}
+.priority img{
+    width:30px;
+    height:30px;
+}
+.from{
+    display:flex;
+}
+.from span{
+    margin-top: 10px;
+    margin-left: 15px;
+    font-size: 15px;
+    font-weight: bold;
+}
+.to{
+    display:flex;
+}
+.to span{
+    margin-top: 5px;
+    margin-left: 15px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+
+#tome{
+    margin-top: 2px;
+    margin-left: 100px;
+    font-size: 15px;
+    font-weight:unset; 
+}
+
+.date{
+    display: flex;
+    margin-left: 500px;
+}
+.date span{
+    margin-top: 20px;
+    margin-right: 10px;
+    font-size: 15px;
+
+}
+
+.body{
+    display:flex;
+    height: 300px; 
+    border:1px solid black; 
+    border-radius: 15px; 
+    margin:5px 5px
+}
+
+.body p{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: initial;
+    max-width: 950px;
+    word-break: break-all;
+    font-size: 15px;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+.attachment{
+    display:flex;
+    height: 80px; 
+    border:1px solid black; 
+    border-radius: 15px; 
+    margin:5px 5px;
+}
+
+.subject img{
+    width: 25px;
+    height:25px;
+    margin-right: 5px;
+}
+.subject button{
+    background-color:darkgray;
+    color: #fff;
+    width:120px;
+    height: 40px;
+    margin-top:15px;
+    border: 1px solid black;
+    border-radius: 25px;
+    cursor: pointer;
+    margin-left: 600px;
+}
+.subject button:hover{
+    background-color:dodgerblue;
+    transform: translateY(-5px);
+    cursor: pointer;
+}
+
+#cancel{
+    width: 40px;
+    height:40px;
+    background-color: white;
+    border-radius: 10px;
+    background-color: darkgray;
+    margin-left: 10px;
+}
+#cancel:hover{
+    background-color: firebrick;
+    transform: translateY(-3px);
+}
+
+.attachment span{
+    font-size: 15px;
+    text-decoration: underline;
+    color: blue;
+    margin-left: 20px;
+    margin-top: 15px;
+    font-weight: bold;
+
+}

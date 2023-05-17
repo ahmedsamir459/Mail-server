@@ -1,0 +1,46 @@
+<div style="display: flex; flex-direction: column; background-image:url('./assets/img/back.webp')">
+    <div class="top">
+        <img src="./assets/img/mail.jpg">
+        <a routerLink="/homepage" id="header">YAA<span style="color:rgb(250, 97, 41); ">M</span>ail</a>
+        <div class="sidebuttons">
+            <a routerLink="/Contacts"><img alt ="Contacts" src="./assets/img/contacts-77.png"><span class="tooltiptext">Contacts</span>
+            </a>
+            <a routerLink="/SignIn"><img style="margin-left: 8px;" alt ="Logout" src="./assets/img/logout.png"><span class="tooltiptext">Logout</span>
+            </a>
+        </div>
+    </div>
+    <div class="main">
+        <app-sidebar></app-sidebar>
+        <div class="section two">
+            <div class="compose">
+                <button id="cancel" (click)="sendtodraft(to.value,text.value,body.value,importance.value,fileInput.files)" routerLink="/homepage">X</button>
+                <label for="to">To:</label>
+                <input type="text" id="to" [value]="draftmail.to" name="to" #to>
+                <label for="subject">Subject:</label>
+                <input type="text" id="subject" [value]="draftmail.subject" name="subject" #text>
+                <label for="importance">Importance:</label>
+                <input type="text" id="importance" [(ngModel)]="priority" name="importance" #importance>
+                <label for="Body">Message:</label>
+                <textarea id="message" name="message" [value]="draftmail.body" #body></textarea>
+                <div style="display:flex;">
+                <div class="att" style="display:flex;width:120vh;">
+                    <div class="Attach">
+                    <input type="file" (change)="select($event)" style="display: none;" multiple #fileInput >
+                    <button id="attach" (click)="fileInput.click();">Attach</button>
+                    </div>
+                    <div class="labels" *ngFor="let file of attachedFileName;let i = index">
+                        <div class="doneattach" style="margin-top: 10px; margin-right:3px;">
+                            <a id="{{ file }}" [href]="attachedFileUrl[i]" target="_blank">{{file}}</a>
+                            <button (click)="remove(i)">x</button>
+                        </div>
+                    </div>
+                </div>
+                <div style="width: 20vh;">
+                    <button id="send"  (click)="send(to.value,text.value,body.value,importance.value,fileInput.files)">Send</button>
+                </div>   
+                </div>
+            </div>
+              
+        </div>
+    </div>
+</div>

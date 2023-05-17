@@ -1,0 +1,242 @@
+.main{
+    display: flex;
+    flex-direction: row;
+    /* margin: 20px 10px 20px 10px; */
+}
+
+.sectiontwo{
+    font:30px;
+    color: black;
+    padding: 10px;
+    display: flex;
+    height: 83vh;
+    width: 80%;
+    margin: 5px 15px 5px 5px;
+    border: 2px solid black;
+    flex-direction: column;
+    border-radius: 20px;    
+    background-color:rgba(255, 252, 252, 0.658);
+}
+
+#welcome{
+    width:50vh;
+    justify-content: center;
+    text-align: center;
+    color:beige;
+    font-size: 30px;
+    margin: 25px 5px;
+    font-weight: bold;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-seri
+}
+
+#header{
+    flex-flow:row nowrap;
+    justify-content: center;
+    text-align: center;
+    color:beige;
+    font-size: 40px;
+    margin: 25px 5px;
+    margin-right: 30vh;
+    font-weight: bold;
+    font-stretch:expanded;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+}
+
+a{
+    text-decoration:none;
+}
+.top{
+    display:flex;
+    border-radius: 15px;
+    border:2px solid black;
+    margin: 5px 15px 5px 15px;
+    height: 12vh;
+    background-color: rgba(126, 162, 228, 0.473);
+
+}
+.top img{
+    width: 80px;
+    height:10vh;
+    margin: 5px 5px 5px 5px;
+    border-radius:15px;
+
+}
+
+.sidebuttons {
+    display:flex;
+    margin-left: 380px;
+    position: relative;
+ 
+}
+.sidebuttons a{
+    display: flex;
+    width :50px;
+    flex-flow: row nowrap;
+    text-align: center;
+    border: 2px solid darkgrey;
+    margin: 10px 10px;
+    padding: 0.5rem 0.3rem;
+    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3),0 1px 3px 1px rgba(60, 64, 67, 0.15);
+    font-size: 15px;
+    background-color: darkgray;
+    border-radius: 80px;
+    color :darkgoldenrod;
+    font-weight: bold;
+    height: 50px;
+    min-width: 56px;
+    align-items: center;
+}
+.sidebuttons a:hover{
+    cursor: pointer;
+    background-color: coral;
+}
+
+.sidebuttons img{
+    width:30px;
+    height:30px;
+    margin-right:5px;
+    border-radius:0px;
+}
+
+  
+.sidebuttons .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: lightgray;
+    color: black;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;   
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    left: 50%;
+    margin-left: -60px;
+}
+  
+  .sidebuttons :hover .tooltiptext {
+    visibility: visible;
+  }
+.dropdown select{
+    width:120px;
+    margin-right: 30px;
+    height: 30px;
+    border: 2px solid black;
+    border-radius: 15px;
+}
+
+
+
+
+table th { width: 20% }
+
+
+table td {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis
+}
+thead tr{
+    background-color:rgba(245, 245, 220, 0.719);
+    border-radius: 50px;
+    border: 1px solid black;
+}
+tbody tr {
+    background-color: white;
+
+
+}
+tbody tr td{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 40px;
+    
+}
+tbody tr:hover {
+background-color:sandybrown ;
+cursor: pointer;
+transform: translateY(-4px);
+}
+
+.priority img{
+    width:30px;
+    height:30px;
+    margin-right: 3px;
+    background-color: darkgray;
+}
+
+  
+.topbuttons{
+    margin-left: 15px;
+
+}  
+.topbuttons img{
+    margin-left: 5px;
+    width:30px;
+    height:30px;
+    margin-right:5px;
+}
+
+.topbuttons a{
+    display: flex;
+    width :50px;
+    flex-flow: row nowrap;
+    text-align: center;
+    border: 2px solid darkgrey;
+    margin: 10px 10px;
+    padding: 0.5rem 0.3rem;
+    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3),0 1px 3px 1px rgba(60, 64, 67, 0.15);
+    font-size: 15px;
+    background-color:beige;
+    border-radius: 80px;
+    font-weight: bold;
+    height: 50px;
+    min-width: 56px;
+    align-items: center;
+}
+.topbuttons a:hover{
+    cursor: pointer;
+    background-color:cadetblue
+}
+
+.topbuttons .sidebuttons {
+    margin-left: 0px;
+ 
+}
+.topbuttons .sidebuttons .tooltiptext{
+
+    top: -40%;
+    margin-left: -75px;
+}
+
+
+.searchbutton a{
+    width:10vh;
+    height:30px;
+    text-align: center;
+    border-radius: 10px;
+    padding-top: 5px;
+    background-color: rgb(165, 42, 42);
+    color: white;
+    font-weight: 500;
+    border:1px solid black;
+}
+.searchbutton a:hover{
+    cursor: pointer;
+    background-color: chartreuse;
+    color: black;
+
+}
+
+pagination-controls {
+    border: 1px solid black;
+    padding-top: 15px;
+    padding-bottom: 0px;
+    font-weight: bold;
+    border-radius: 15px;
+    background-color: rgba(245, 245, 220, 0.705);
+}
+
+
+

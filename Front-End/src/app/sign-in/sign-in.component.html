@@ -1,0 +1,12 @@
+<div class="main" style="background-image: url('./assets/img/back.webp');">
+    <div class="loginbox">    
+    <h1>Sign In</h1>
+    <label>Email:</label>
+    <input type="text" placeholder="enter your email" #mail>
+    <label>Password:</label>
+    <input type="password" placeholder="enter password" #pass>
+    <input type="submit" name="" value="Sign In" (click)="sign_in(mail.value,pass.value)">
+    <label style="font-size:15px; margin-left: 5px;">Don't have an account? </label>
+    <a style="font-size: 15px; font-weight: bold;" routerLink="/signup">Sign Up</a>
+    </div>
+    </div>

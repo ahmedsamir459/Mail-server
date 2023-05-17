@@ -1,0 +1,143 @@
+.section{
+    font:30px;
+    color: black;
+    padding: 10px;
+    display: flex;
+    height: 83vh;
+    margin: 5px 5px 5px 15px;
+    border-radius: 20px;
+    border: 2px solid black;
+    flex-direction: column;
+    background-color: rgba(126, 162, 228, 0.473);
+}
+
+a{
+    text-decoration:none;
+}
+.sidebuttons a{
+    display: flex;
+    width :150px;
+    flex-flow: row nowrap;
+    text-align: center;
+    border: 2px solid darkgrey;
+    margin: 10px 5px;
+    padding: 0.5rem 0.3rem;
+    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3),0 1px 3px 1px rgba(60, 64, 67, 0.15);
+    font-size: 20px;
+    background-color:rgb(245, 245, 220);
+    border-radius: 24px;
+    color :rgb(250, 97, 41);
+    font-weight: bold;
+    height: 60px;
+    min-width: 56px;
+    align-items: center;
+}
+.sidebuttons a:hover{
+    cursor: pointer;
+    background-color: lightgray;
+    box-shadow: 1px 1px 1px 1px orange
+}
+.sidebuttons{
+    margin:5px 0px 5px 0px;
+    position: relative;
+}
+.sidebuttons img{
+    width:30px;
+    height:30px;
+    margin-right:5px;
+}
+.sidebuttons p{
+    margin: 0px;
+}
+.sidebuttons .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: lightgray;
+    color: black;
+    font-size: 15px;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;   
+    position: absolute;
+    z-index: 1;
+    top: 22px;
+    left: 105%;
+}
+.FOLDER .sidebuttons .tooltiptext{
+    top: 100%;
+    left: 50%;
+    margin-left: -60px;
+}  
+.sidebuttons :hover .tooltiptext {
+    visibility: visible;
+  }
+
+
+
+.sidebutton{
+    height: 60px;
+    width: 170px;
+    margin:5px 0px 5px 10px;
+    border-radius: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    color:yellowgreen;
+     
+}
+
+.sidebutton:hover{
+    cursor: pointer;
+    background-color: lightgray;
+    box-shadow: 2px 2px 2px 2px lightblue;
+}
+
+
+
+.FOLDER .sidebuttons a{
+    width: 60px;
+    height: 60px;
+    border-radius:80px;
+    margin:0px 15px;
+    font-size: 12px;
+    font-weight: bold;
+    border: 1.5px solid black;
+    margin-top: 15px;
+    justify-content: center;
+
+}
+.FOLDER .sidebuttons img{
+    width:30px;
+    height:30px;
+    margin-left:4px;
+}
+#addn , #addin ,#rename , #renamein{
+    display: none;
+    margin-left: 20px;
+}
+
+.nav-list a{
+    flex-flow:row nowrap;
+    justify-content:space-between;
+    display: flex;
+    padding: 3px;
+    padding-left: 1rem;
+    width: 270px;
+    height: 35px;
+    color :black;
+    align-items:center ;
+    background-color: darkgray;
+    margin:5px 0px 5px 0px;
+    border-radius: 20px;
+    border: 1px solid black;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: 'Times New Roman', Times, serif;
+
+}
+.nav-list a:hover{
+    background-color: gainsboro;
+    box-shadow: 2px 2px 2px 2px darkgoldenrod;
+}
+.count{
+    margin-right: 10px;
+}

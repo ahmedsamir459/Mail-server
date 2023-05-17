@@ -1,0 +1,37 @@
+<div style="display: flex; flex-direction: column; background-image:url('./assets/img/back.webp')">
+    <div class="top">
+        <img src="./assets/img/mail.jpg">
+        <a routerLink="/homepage" id="header">YAA<span style="color:rgb(250, 97, 41); ">M</span>ail</a>
+        <div class="sidebuttons">
+            <a routerLink="/Contacts"><img alt ="Contacts" src="./assets/img/contacts-77.png"><span class="tooltiptext">Contacts</span>
+            </a>
+            <a routerLink="/SignIn"><img style="margin-left: 8px;" alt ="Logout" src="./assets/img/logout.png"><span class="tooltiptext">Logout</span>
+            </a>
+        </div>
+    </div>
+    <div class="main">
+        <app-sidebar></app-sidebar>
+        <div class="sectiontwo">
+        <div class="inmain">
+            <div class="subject">
+            <button id="cancel" routerLink="/homepage">X</button>
+            <a><span style="font-weight: bold;">Subject: </span>{{thatmail.subject}}</a>
+            <button  (click)="edit()"><img src="./assets/img/reply.jpg">{{Reply}}</button>
+            </div>
+            <div style="display:flex;height: 60px; border:1px solid black; border-radius: 15px; margin:0px 5px">
+            <div class="priority"><img src="./assets/img/star.jpg"><span style="margin-left: 5px; font-weight: bold; margin-top:5px">{{thatmail.priority}}</span></div>
+            <div style="display: flex; flex-direction:column;">
+            <div class="from"><span>From: <span style="font-weight: normal;">{{thatmail.from}}</span></span></div>
+            <div class="to"><span>To: <span style="font-weight: normal;">{{thatmail.to}}</span></span></div>
+            </div>
+            <div class="date"> <span>{{thatmail.date}}</span></div>
+            </div>
+            <div class="body"><p>{{thatmail.body}}</p></div>
+            <div class="attachment" style="display: flex;">
+                <div  *ngFor="let file of attachedFileUrl;let i = index">
+                <a [href]="file" target="_blank" ><span>{{attachedFileName[i]}}</span></a>  
+                </div>
+            </div>
+        </div>  
+    </div>
+</div>

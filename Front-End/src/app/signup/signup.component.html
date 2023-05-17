@@ -1,0 +1,16 @@
+<div class="main" style="background-image: url('./assets/img/back.webp');">
+    <div class="loginbox">        
+    <h1>Sign Up</h1>
+    <label>Email:</label>
+    <br>
+    <div class="signupemail">
+    <input type="text"  placeholder="Enter your email" #mail>
+    <input  type="text" class="form-control" value="@mail.com" id="yaamail" readonly>
+    </div>
+    <label>Password:</label>
+    <input type="password" placeholder="enter password" #pass>
+    <input type="submit" (click)="signup(mail.value,pass.value)" name="" value="Sign Up">  
+    <label style="font-size:17px; margin-left: 5px;">Already have an account? </label>
+    <a style="font-size: 17px; font-weight: bold;" routerLink="/SignIn">Login</a>
+    </div>
+</div>
